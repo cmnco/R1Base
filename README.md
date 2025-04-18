@@ -49,7 +49,24 @@ static void Main()
 Este repositorio está diseñado para el equipo de desarrollo de SoluOne, sirviendo como referencia y base técnica para los proyectos actuales y futuros.
 
 ## 🛠️ Compilación
-Este proyecto se compila desde la solución RetailOneBase.sln, compatible con Visual Studio. Asegúrate de tener la versión adecuada del SDK .NET instalada.
+Este proyecto se compila desde la solución RetailOneBase.sln, compatible con Visual Studio. Asegúrate de tener la versión adecuada del SDK .NET instalada:
+Versión mínima requerida: .NET Framework 4.5.1. 
+Versión recomendada: .NET Framework 4.8.1.
+
+## 📐 Arquitectura
+Este proyecto se compone de tres librerías con relaciones claras de dependencia.
+Consulta el archivo [arquitectura.md](./docs/arquitectura.md) para ver:
+- Relación entre las librerías.
+- Flujo completo de ejecución desde la configuración hasta la consulta.
+- Estructura del archivo RetailOne.config.
+
+## 🧰 Estándar de Código
+Se utiliza un estándar interno de nomenclatura y estructuras. Ver detalles completos en [estandar-codigo.md](./docs/estandar-codigo.md):
+- Convención de nombres para clases, métodos y variables.
+- Reglas de manejo de errores.
+- Patrones típicos para acceso a datos.
+- Uso de métodos de extensión y expresiones modernas.
+
 
 ## 📝 Licencia
 Este repositorio es de uso interno exclusivo de SoluOne, S.A. de C.V. Todos los derechos reservados. Avisos de privacidad
