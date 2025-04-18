@@ -1,0 +1,653 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RetailOne.Datos</name>
+    </assembly>
+    <members>
+        <member name="T:RetailOne.Datos.ConexionDatos">
+            <summary>
+            Simplifica la tarea de conexión a base de datos y ejecución de consultas y comandos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.ConexionDatos.Origen">
+            <summary>
+            Obtiene el origen de datos con que se inició la conexión.
+            </summary>
+            <value>
+            Objeto de la clase <see cref="T:RetailOne.Datos.Origen"/> con la cadena de conexión y proveedor del origen de datos.
+            </value>
+        </member>
+        <member name="P:RetailOne.Datos.ConexionDatos.TextoComando">
+            <summary>
+            Obtiene o establece el texto del comando que se correrá en la base de datos.
+            </summary>
+            <value>Texto que define el comando o consulta a ejecutar.</value>
+        </member>
+        <member name="P:RetailOne.Datos.ConexionDatos.OptimizarConexionesAsociadas">
+            <summary>
+            Habilita el manejo de conexiones compartidas entre distintos comandos asociados, para mejorar el rendimiento.
+            Esto permitirá utilizar, en los casos en que se pueda, una misma conexión del Connection Pool para los objetos
+            de tipo <see cref="T:RetailOne.Datos.ConexionDatos"/> que se creen a partir de la ejecución del método <see cref="M:RetailOne.Datos.ConexionDatos.NuevaConexionAsociada"/>.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.ConexionDatos.HabilitadoParaTextoCompleto">
+            <summary>
+            Obtiene un booleano especificando si la base de datos correspondiente a la conexión tiene habilitada las funciones de
+            búsqueda de texto completo.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:RetailOne.Datos.ConexionDatos.MantenerConexionAbierta" -->
+        <member name="P:RetailOne.Datos.ConexionDatos.Comando">
+            <summary>
+            Obtiene el objeto de comando internamente creado por la conexión.
+            </summary>
+            <value>Objeto de tipo <see cref="T:System.Data.Common.DbCommand"/> subyacente.</value>
+        </member>
+        <member name="P:RetailOne.Datos.ConexionDatos.Lector">
+            <summary>
+            Obtiene el objeto lector con que se podrán acceder e iterar en los resultados de la consulta.
+            </summary>
+            <value>Objeto de tipo <see cref="T:System.Data.Common.DbDataReader"/> subyacente.</value>
+        </member>
+        <member name="P:RetailOne.Datos.ConexionDatos.TextoComandoCompleto">
+            <summary>
+            Obtiene el texto del comando junto con las declaraciones de las variables con los valores de los parámetros que se le hayan
+            especificado al comando. Con el comando completo podrá ejecutarlo en otra herramienta (como el SQL Server Management Studio)
+            con propósitos de revisión y depuración.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.#ctor(RetailOne.Datos.Origen)">
+            <summary>
+            Crea un objeto <see cref="T:RetailOne.Datos.ConexionDatos"/> dado un origen de datos específico.
+            </summary>
+            <param name="origen">Objeto del tipo <see cref="T:RetailOne.Datos.Origen"/> que especifica la cadena de conexión y proveedor de la base de datos.</param>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.#ctor(RetailOne.Datos.ConexionDatos)">
+            <summary>
+            Crea un objeto <see cref="T:RetailOne.Datos.ConexionDatos"/> a partir de otro objeto de conexión.
+            Si la conexión de origen tiene habilitada la propiedad <c>OptimizarConexionesAsociadas</c>,
+            hará uso de la optimización de múltiples conjuntos de resultados para una misma conexión.
+            De lo contrario, simplemente creará una nueva conexión copiando la información de origen de datos
+            (cadena de conexión y proveedor de base de datos).
+            </summary>
+            <param name="conexionOrigen">ConexiónDatos original</param>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ValidarComando">
+            <summary>
+            Verifica que se haya especificado el texto del comando.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ValidarComandoHana">
+            <summary>
+            Prepara el texto comando en caso de ser proveedor Hana.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.RedistribucionDeParametros">
+            <summary>
+            Redistribución de lista de parámetros según orden de aparición en el texto de la consulta.
+            Útil sólo para Hana.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.AbrirConexion">
+            <summary>
+            Si la conexión está cerrada, intenta abrirla para la posterior ejecución de un comando.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.CerrarConexion">
+            <summary>
+            Si la conexión está abierta y no hay una transacción iniciada, intenta cerrarla.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ProbarConexion">
+            <summary>
+            Prueba que se pueda abrir una conexión válida con el origen de datos especificado al construir el objeto.
+            </summary>
+            <returns>Devuelve <see langword="true"/> si la prueba de conexión fue satisfactoria; de lo contrario, retorna <see langword="false"/>.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ProbarConexion(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.IniciarTransaccion">
+            <summary>
+            Si el proveedor de base de datos lo soporta, inicializa una transacción asociada
+            a la conexión, permitiendo la ejecución segura de múltiples comandos y garantizando la coherencia e integridad de los datos.
+            </summary>
+            <exception cref="T:System.Exception">Se produce una excepción si el origen de datos no soporta transacciones.</exception>
+            <remarks>Al iniciar una transacción, se omite el valor de la propiedad <see cref="P:RetailOne.Datos.ConexionDatos.MantenerConexionAbierta"/> pues
+            se hace necesario mantener siempre activa la conexión asociada a la transacción, hasta que se ejecuten los métodos
+            <see cref="M:RetailOne.Datos.ConexionDatos.ConfirmarTransaccion"/> ó <see cref="M:RetailOne.Datos.ConexionDatos.RestaurarTransaccion"/>.</remarks>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ConfirmarTransaccion">
+            <summary>
+            Al ejecutar el método, se envían todos los comandos al manejador para su ejecución.
+            </summary>
+            <exception cref="T:System.Exception">Se produce una excepción si no se pudo confirmar la transacción por problemas en la ejecución
+            de al menos un comando.</exception>
+            <example>
+            Se recomienda envolver la ejecución de este método en un bloque <see langword="try/catch"/>,
+            ubicando en el bloque <see langword="catch"/> un llamado al método <see cref="M:RetailOne.Datos.ConexionDatos.RestaurarTransaccion"/>:
+            <code>
+            using (ConexiónDatos transacciónSegura = new ConexiónDatos(origenDatos))
+            {
+                transacciónSegura.IniciarTransacción();
+                // Ejecutar todos los comandos de la transacción.
+                try
+                {
+                    transacciónSegura.ConfirmarTransacción();
+                }
+                catch (Exception ex)
+                {
+                    transacciónSegura.RestaurarTransacción();
+                }
+            }
+            </code></example>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.RestaurarTransaccion">
+            <summary>
+            Si por alguna razón se quieren invalidar los comandos almacenados en la transacción, se ejecuta este
+            método, restableciendo así el estado original de los datos.
+            </summary>
+            <exception cref="T:System.Exception">Se produce una excepción si no se pudo realizar la recuperación de los datos.</exception>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.NuevaConexionAsociada">
+            <summary>
+            Crea una nueva conexión asociada a la actual. Dependiendo del valor del parámetro <see cref="P:RetailOne.Datos.ConexionDatos.OptimizarConexionesAsociadas"/>,
+            se hará uso de la optimización de múltiples conjuntos de resultados o simplemente se creará una nueva conexión con los
+            mismos datos de origen.
+            </summary>
+            <returns>Objeto de tipo <see cref="T:RetailOne.Datos.ConexionDatos"/> con el mismo origen de datos de la conexión actual.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarLector">
+            <summary>
+            Ejecuta el comando y establece el lector resultante en la propiedad <see cref="P:RetailOne.Datos.ConexionDatos.Lector"/>.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.CerrarLector">
+            <summary>
+            Cierra el lector e intenta cerrar la conexión (si la propiedad <see cref="P:RetailOne.Datos.ConexionDatos.MantenerConexionAbierta"/>
+            está desactivada y si no hay una transacción iniciada).
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarComando">
+            <summary>
+            Ejecuta un comando que no requiera devolución de datos (por ejemplo, <c>insert</c>, <c>update</c> o <c>delete</c>).
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarEscalar``1">
+            <summary>
+            Ejecuta un comando que devuelve un único dato escalar.
+            <typeparam name="T">Tipo de datos al que se casteará el valor escalar devuelto.</typeparam>
+            </summary>
+            <returns>Objeto de tipo <typeparamref name="T"/> con el valor devuelto por el comando.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarTabla">
+            <summary>
+            Ejecuta un comando que devuelva los datos en un objeto de tipo <see cref="T:System.Data.DataTable"/>.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarConjuntoDeDatos">
+            <summary>
+            Ejecuta un comando que devuelva los datos en un objeto de tipo <see cref="T:System.Data.DataSet"/>.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarConjuntoDeDatos(System.String)">
+            <summary>
+            Ejecuta un comando que devuelva los datos en un objeto de tipo <see cref="T:System.Data.DataSet"/>.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarConjuntoDeDatos(System.String,System.Data.DataSet)">
+            <summary>
+            Ejecuta un comando que devuelva los datos en un objeto de tipo <see cref="T:System.Data.DataSet"/>.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.AplicarConjuntoDeDatos(System.Data.DataTable)">
+            <summary>
+            
+            </summary>
+            <param name="tablaDatos"></param>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarObjetos``1(System.Func{RetailOne.Datos.ConexionDatos,``0,``0},System.Object[])">
+            <summary>
+            Ejecuta un comando que devuelva los datos materializados en objetos de una clase en particular, con el uso
+            de una función selectora de valores.
+            </summary>
+            <typeparam name="TipoAMaterializar">Tipo (clase) en que se materializarán los datos devueltos por la consulta.</typeparam>
+            <param name="selectorValores">Función que, con el uso de una variable de conexión y un objeto del tipo a materializar,
+            realizará la carga de los datos del lector para una fila en dicho objeto.
+            <para>Comúnmente, esta función deberá retornar el mismo objeto obtenido en el segundo parámetro de la función; sin embargo,
+            está abierta la posibilidad de retornar otra instancia de esa misma clase (por ejemplo, si se programa una política de caché de instancias).</para></param>
+            <param name="parámetrosConstructor">Lista de parámetros con que se construirán las instancias de la clase del <see cref="!:TipoAMaterializar"/>.</param>
+            <returns>Enumerado de objetos materializados.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.EjecutarObjetos``1(System.Object[])">
+            <summary>
+            Ejecuta un comando que devuelva los datos materializados en objetos de una clase en particular, con el uso de reflexión.
+            <para>En este caso, el método intentará establecer los valores de todos los campos devueltos por la base de datos en
+            propiedades que tengan exactamente el mismo nombre y tipo de datos, así como estén activados para escritura.</para>
+            </summary>
+            <typeparam name="TipoAMaterializar">Tipo (clase) en que se materializarán los datos devueltos por la consulta.</typeparam>
+            <param name="parámetrosConstructor">Lista de parámetros con que se construirán las instancias de la clase del <see cref="!:TipoAMaterializar"/>.</param>
+            <returns>Enumerado de objetos materializados.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.LeerFila">
+            <summary>
+            Intenta avanzar el lector de datos a la siguiente fila del set de registros devueltos por la consulta.
+            </summary>
+            <returns>Devuelve <see langword="true"/> si realizó la lectura correcta de la siguiente fila y se posicionó en ella; <see langword="false"/>, si el lector llegó a su fin y no hay más filas que leer.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.DatoLector``1(System.String,System.Boolean)">
+            <summary>
+            Obtiene el dato de una columna para la fila actual del lector, especificando el tipo de datos al que se casteará.
+            Si en la consulta no fue seleccionada una columna con el nombre del parámetro <paramref name="nombreColumna"/>,
+            se omitirá la consulta del dato y no se lanzará ninguna excepción.
+            </summary>
+            <typeparam name="T">Tipo del dato que se obtendrá. Para datos primitivos, puede hacerse uso de una construcción <see cref="T:System.Nullable"/>.</typeparam>
+            <param name="nombreColumna">Nombre de la columna cuyo dato se obtendrá.</param>
+            <param name="omitirSiColumnaNoExiste">Si vale <c>true</c>, se omitirá la consulta del dato cuando no exista una columna devuelta con el nombre descrito en el parámetro <paramref name="nombreColumna"/></param>
+            <returns>Devuelve el dato casteado al tipo especificado.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.DatoLector``1(System.String,System.Boolean,``0)">
+            <summary>
+            Obtiene el dato de una columna para la fila actual del lector, especificando el tipo de datos al que se casteará.
+            Si en la consulta no fue seleccionada una columna con el nombre del parámetro <paramref name="nombreColumna"/>,
+            se omitirá la consulta del dato y no se lanzará ninguna excepción.
+            </summary>
+            <typeparam name="T">Tipo del dato que se obtendrá. Para datos primitivos, puede hacerse uso de una construcción <see cref="T:System.Nullable"/>.</typeparam>
+            <param name="nombreColumna">Nombre de la columna cuyo dato se obtendrá.</param>
+            <param name="omitirSiColumnaNoExiste">Si vale <c>true</c>, se omitirá la consulta del dato cuando no exista una columna devuelta con el nombre descrito en el parámetro <paramref name="nombreColumna"/></param>
+            <param name="valorPorDefecto">Valor a retornar en caso de que la columna no exista o el dato sea nulo.</param>
+            <returns>Devuelve el dato casteado al tipo especificado.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.DatoLector``1(System.String)">
+            <summary>
+            Obtiene el dato de una columna para la fila actual del lector, especificando el tipo de datos al que se casteará.
+            </summary>
+            <typeparam name="T">Tipo del dato que se obtendrá. Para datos primitivos, puede hacerse uso de una construcción <see cref="T:System.Nullable"/>.</typeparam>
+            <param name="nombreColumna">Nombre de la columna cuyo dato se obtendrá.</param>
+            <returns>Devuelve el dato casteado al tipo especificado.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.DatoLector``1(System.String,``0)">
+            <summary>
+            Obtiene el dato de una columna para la fila actual del lector, especificando el tipo de datos al que se casteará.
+            </summary>
+            <typeparam name="T">Tipo del dato que se obtendrá. Para datos primitivos, puede hacerse uso de una construcción <see cref="T:System.Nullable"/>.</typeparam>
+            <param name="nombreColumna">Nombre de la columna cuyo dato se obtendrá.</param>
+            <param name="valorPorDefecto">Valor a retornar si el dato es nulo.</param>
+            <returns>Devuelve el dato casteado al tipo especificado.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.CargarConsulta(RetailOne.Datos.Consulta)">
+            <summary>
+            Devuelve el texto del comando con el texto que corresponda al proveedor de la conexión, dado un objeto de tipo <see cref="T:RetailOne.Datos.Consulta"/>,
+            y sobre-escribe la propiedad <see cref="P:RetailOne.Datos.ConexionDatos.TextoComando"/> con el valor encontrado.
+            Si no se especifica el texto para dicho proveedor, se asumirá el comando definido como base para la consulta.
+            </summary>
+            <param name="consulta">Consulta que se cargará.</param>
+            <returns>Texto del comando (de acuerdo al proveedor).</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:RetailOne.Datos.ConexionDatos.CargarConsulta(RetailOne.Datos.Consulta,System.Nullable{System.Data.CommandType})" -->
+        <member name="M:RetailOne.Datos.ConexionDatos.ObtenerConsultaProveedor(RetailOne.Datos.Consulta)">
+            <summary>
+            Obtiene el texto de la consulta para el proveedor definido en el origen.
+            </summary>
+            <param name="consulta"></param>
+            <returns>String de la consulta</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ObtenerConsultaProveedor(RetailOne.Datos.Consulta,RetailOne.Datos.Proveedor)">
+            <summary>
+            Obtiene el texto de la consulta para el proveedor especificado.
+            </summary>
+            <param name="consulta">Consulta</param>
+            <param name="proveedor">Proveedor</param>
+            <returns>String de la consulta</returns>
+        </member>
+        <member name="P:RetailOne.Datos.ConexionDatos.Parametros">
+            <summary>
+            Colección de los parámetros que usará el comando.
+            </summary>
+            <value>Colección de tipo <see cref="T:System.Data.Common.DbParameterCollection"/> con la colección de todos los parámetros del comando.</value>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.Parametro(System.String)">
+            <summary>
+            Obtiene un objeto de parámetro dado su nombre.
+            </summary>
+            <param name="nombreParametro">Nombre del parámetro a obtener.</param>
+            <returns>Devuelve el objeto de tipo <see cref="T:System.Data.Common.DbParameter"/>.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.AgregarParametro(System.String,System.Object)">
+            <summary>
+            Agrega un parámetro al comando.
+            </summary>
+            <param name="nombre">Nombre del parámetro.</param>
+            <param name="valor">Value del parámetro.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.AgregarParametro(System.String,System.Object,System.Nullable{System.Data.DbType})">
+            <summary>
+            Agrega un parámetro al comando.
+            </summary>
+            <param name="nombre">Nombre del parámetro.</param>
+            <param name="valor">Value del parámetro.</param>
+            <returns>Retorna el objeto de parámetro recién creado.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.LimpiarParametros">
+            <summary>
+            Elimina los parámetros registrados para el comando.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.AgregarLiteral(System.String,System.String)">
+            <summary>
+            Agrega al texto de comando actual una cadena en reemplazo de todas las apariciones de una variable literal.
+            </summary>
+            <param name="nombreLiteral">Nombre de la variable literal.</param>
+            <param name="valor">Texto con que se reemplazará la variable</param>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ReemplazarLiteral(System.String,System.String,System.String)">
+            <summary>
+            Reemplaza todas las apariciones de una variable literal con un valor específico, en un texto de comando dado. No afecta al <see cref="P:RetailOne.Datos.ConexionDatos.TextoComando"/> del objeto.
+            </summary>
+            <param name="texto">Texto de comando base en el que se encuentran las variables a reemplazar.</param>
+            <param name="nombreLiteral">Nombre de la variable a reemplazar.</param>
+            <param name="valor">Value que se establecerá a las variables literales definidas.</param>
+            <returns>Texto de comando con los reemplazos aplicables.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.VerificarValor(System.Object)">
+            <summary>
+            Realiza una verificación del objeto de entrada para reemplazarlo por el valor <see cref="T:System.DBNull"/> si este
+            valía <see langword="null"/> originalmente. Útil al momento de asignar un valor a la propiedad <c>Value</c> de un parámetro (sin el uso de <see cref="M:RetailOne.Datos.ConexionDatos.AgregarParametro(System.String,System.Object)"/>).
+            </summary>
+            <param name="entrada">Objeto a verificar.</param>
+            <returns>Objeto verificado. Si la entrada era <see langword="null"/>, retorna <see cref="T:System.DBNull"/>.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.ReemplazarComodines(System.String)">
+            <summary>
+            Reemplaza el carácter asterisco comodín (*) por aquél usado específicamente en el proveedor del origen de datos.
+            </summary>
+            <param name="entrada">Cadena de entrada con los caracteres comodín.</param>
+            <returns>Cadena con comodines reemplazados.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.Dispose">
+            <summary>
+            Libera los recursos de la conexión, primeramente, cerrando el lector si se encontraba abierto.
+            Posteriormente cierra la conexión si no estaba cerrada.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ConexionDatos.PruebaConexion">
+            <summary>
+            Método ejemplo
+            </summary>
+        </member>
+        <member name="T:RetailOne.Datos.Consulta">
+            <summary>
+            Representa la agrupación de un conjunto de comandos de consulta que tienen un mismo propósito pero que están escritas
+            para distintos proveedores de base de datos. De esta manera, se simplifica posteriormente el uso de múltiples
+            orígenes de datos y plataformas con el mismo código de lógica.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Consulta.TextosComando">
+            <summary>
+            Obtiene un diccionario con el texto de comando aplicable a cada <see cref="T:RetailOne.Datos.Proveedor"/>.
+            La clave del diccionario es el proveedor.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Consulta.Base">
+            <summary>
+            Representa el proveedor base o predeterminado que se definió entre los comandos del objeto.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.Consulta.#ctor(RetailOne.Datos.Proveedor,RetailOne.Datos.ComandoConsulta[])">
+            <summary>
+            Construye una consulta definiendo los textos de comando de para los distintos proveedores que se prevén usar.
+            </summary>
+            <param name="proveedorBase">Define el proveedor predeterminado de entre los comandos definidos en el parámetro 
+            <paramref name="comandos"/>.
+            Si una conexión intenta cargar un objeto <see cref="T:RetailOne.Datos.Consulta"/> y en dicha consulta no hay definido un comando
+            para el proveedor que tiene la conexión, se considerará el comando de este proveedor predeterminado.</param>
+            <param name="comandos">Define el conjunto de comandos que representarán esta consulta para los distintos
+            proveedores de base de datos.</param>
+        </member>
+        <member name="M:RetailOne.Datos.Consulta.ObtenerTextoComando(RetailOne.Datos.Proveedor)">
+            <summary>
+            Retorna el texto del comando definido para el proveedor del parámetro <paramref name="proveedor"/>.
+            Si no se encuentra un texto de comando para dicho proveedor, se retorna el comando del proveedor predeterminado
+            (dada la propiedad <see cref="P:RetailOne.Datos.Consulta.Base"/>).
+            </summary>
+            <param name="proveedor">Proveedor para el cual se buscará un comando definido.</param>
+            <returns>Texto del comando definido para el valor del parámetro <paramref name="proveedor"/>.
+            Si no se definió un comando para dicho proveedor, se retornará el texto del comando para el proveedor base.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.Consulta.ReemplazarTexto(System.String,System.String)">
+            <summary>
+            Reemplaza una cadena de texto incluida en los comandos de todos los proveedores con una nueva cadena de reemplazo.
+            </summary>
+            <param name="original">Cadena original que será reemplazada.</param>
+            <param name="reemplazo">Cadena de reemplazo.</param>
+            <returns>Retorna la referencia a la consulta actual (<c>this</c>), permitiendo el encadenamiento de llamados a función.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.Consulta.ReemplazarTexto(RetailOne.Datos.Proveedor,System.String,System.String)">
+            <summary>
+            Reemplaza una cadena de texto incluida en el comando de un proveedor de datos con una nueva cadena de reemplazo.
+            </summary>
+            <param name="original">Cadena original que será reemplazada.</param>
+            <param name="reemplazo">Cadena de reemplazo.</param>
+            <returns>Retorna la referencia a la consulta actual (<c>this</c>), permitiendo el encadenamiento de llamados a función.</returns>
+        </member>
+        <member name="T:RetailOne.Datos.ComandoConsulta">
+            <summary>
+            Representa el texto de comando definido para un proveedor de base de datos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.ComandoConsulta.Proveedor">
+            <summary>
+            Obtiene el proveedor de base de datos para el cual se definió el comando.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.ComandoConsulta.TextoComando">
+            <summary>
+            Obtiene el texto del comando.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.ComandoConsulta.#ctor(RetailOne.Datos.Proveedor)">
+            <summary>
+            Protegido. Construye un comando especificando únicamente el proveedor.
+            </summary>
+            <param name="proveedor">Proveedor de datos para el cual será definido el texto de comando</param>
+        </member>
+        <member name="M:RetailOne.Datos.ComandoConsulta.#ctor(RetailOne.Datos.Proveedor,System.String)">
+            <summary>
+            Construye un comando especificando el texto del comando y el proveedor para el cual fue escrito.
+            </summary>
+            <param name="proveedor">Proveedor de datos para el cual será definido el texto de comando</param>
+            <param name="textoComando">Texto del comando</param>
+        </member>
+        <member name="T:RetailOne.Datos.Proveedor">
+            <summary>
+            Indica la plataforma de una base de datos.
+            </summary>
+        </member>
+        <member name="T:RetailOne.Datos.Origen">
+            <summary>
+            Representa un origen de datos relacional (base de datos).
+            Engloba una cadena de conexión y la especificación del proveedor del origen,
+            adicional de un nombre para identificarlo.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.ID">
+            <summary>
+            Obtiene el identificador del origen.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.CadenaConexion">
+            <summary>
+            Obtiene la cadena de conexión (formateada de acuerdo al soporte de ADO.NET) del origen de datos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.Proveedor">
+            <summary>
+            Indica la plataforma de la base de datos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.UsuarioDB">
+            <summary>
+            Usuario de base de datos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.ContraseñaDB">
+            <summary>
+            Contrasela de base de datos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.NombreBD">
+            <summary>
+            Nombre de la base de datos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.ServidorBD">
+            <summary>
+            Servidor de base de datos.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.Tenant">
+            <summary>
+            Tenant Hana.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Datos.Origen.Fabrica">
+            <summary>
+            Nombre fábrica ocupada por el proveedor seleccionado.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.#ctor(System.String,System.String,System.String,System.String,RetailOne.Datos.Proveedor)">
+            <summary>
+            Construye un origen de datos a partir de sus datos básicos.
+            </summary>
+            <param name="servidor">Nombre del servidor de base de datos</param>
+            <param name="nombre">Nombre de la base de datos. Puede tener explícito el Tenant (NDB o HDB), prefijando en el nombre y separando con una @. Ejem: HDB@NombreBD.</param>
+            <param name="usuario">Usuario</param>
+            <param name="contraseña">Contraseña</param>
+            <param name="proveedor">Indica bajo qué plataforma se provee la base de datos.</param>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.#ctor(System.String,System.String,System.String,System.String,System.String,RetailOne.Datos.Proveedor)">
+            <summary>
+            Construye un origen de datos a partir de sus datos básicos.
+            </summary>
+            <param name="servidor">Nombre del servidor de base de datos</param>
+            <param name="nombre">Nombre de la base de datos. Puede tener explícito el Tenant (NDB o HDB), prefijando en el nombre y separando con una @. Ejem: HDB@NombreBD.</param>
+            <param name="usuario">Usuario</param>
+            <param name="contraseña">Contraseña</param>
+            <param name="tenant">tenant (o inquilino) se refiere a una base de datos independiente que opera dentro de una instancia de SAP HANA. Esto es parte de la arquitectura de base de datos multitenant.</param>
+            <param name="proveedor">Indica bajo qué plataforma se provee la base de datos.</param>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.#ctor(System.String,RetailOne.Datos.Proveedor)">
+            <summary>
+            Construye un origen de datos a partir de sus datos básicos.
+            </summary>
+            <param name="id">Identificador del origen.</param>
+            <param name="cadenaConexion">Cadena de conexión (formateada de acuerdo al soporte de ADO.NET) del origen de datos.</param>
+            <param name="proveedor">Indica bajo qué plataforma se provee la base de datos.</param>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.ObtenerFabrica(RetailOne.Datos.Proveedor)">
+            <summary>
+            Obtiene la fábrica <see cref="T:System.Data.Common.DbProviderFactory"/> del proveedor especificado.
+            </summary>
+            <param name="proveedor">Proveedor del que se quiere obtener la fábrica de objetos.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.ObtenerCadenaDeConexion(System.String,System.String,System.String,System.String,RetailOne.Datos.Proveedor)">
+            <summary>
+            Construye la cadena de conexión según los datos proporcionados.
+            </summary>
+            <param name="servidor">Nombre del servidor de base de datos</param>
+            <param name="nombre">Nombre de la base de datos</param>
+            <param name="usuario">Usuario</param>
+            <param name="contraseña">Contraseña</param>
+            <param name="proveedor">Indica bajo qué plataforma se provee la base de datos.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.ListaCatalogos">
+            <summary>
+            Lista el catálogo de bases de datos dispobibles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.ListaCatalogos(RetailOne.Datos.Origen)">
+            <summary>
+            Lista el catálogo de bases de datos dispobibles en el origen
+            </summary>
+            <param name="origen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.BaseDeDatosHana(RetailOne.Datos.Origen)">
+            <summary>
+            Retorna la base de datos habilitada en Hana (NDB o HDB)
+            </summary>
+            <param name="origen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.ProbarConexion(System.Boolean)">
+            <summary>
+            Prueba que se pueda abrir una conexión válida con el origen de datos especificado al construir el objeto.
+            </summary>
+            <returns>Devuelve <see langword="true"/> si la prueba de conexión fue satisfactoria; de lo contrario, retorna <see langword="false"/>.</returns>
+        </member>
+        <member name="M:RetailOne.Datos.Origen.CargarEnsamblado(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="ruta"></param>
+        </member>
+        <member name="M:RetailOne.Datos.UtilidadesDataTable.ToDictionary``2(System.Data.DataTable,System.Func{System.Data.DataRow,``0},System.Func{System.Data.DataRow,``1})">
+            <summary>
+            Permite extraer de un DataTable un diccionario.
+            </summary>
+            <typeparam name="TKey">Tipo de la clave del diccionario.</typeparam>
+            <typeparam name="TElement">Tipo correspondiente al valor del diccionario.</typeparam>
+            <param name="source">Tabla origen</param>
+            <param name="keySelector">Función selectora del campo que corresponderá con la clave del diccionario.</param>
+            <param name="elementSelector">Función selectora del campo que corresponderá con el valor devuelto por el diccionario.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.UtilidadesDataTable.Valor``1(System.Data.DataRow,System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="fila"></param>
+            <param name="nombreColumna"></param>
+            <param name="omitirSiColumnaNoExiste"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.UtilidadesDataTable.Valor``1(System.Data.DataRow,System.String,System.Boolean,``0)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="fila"></param>
+            <param name="nombreColumna"></param>
+            <param name="omitirSiColumnaNoExiste"></param>
+            <param name="valorPorDefecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.UtilidadesDataTable.Valor``1(System.Data.DataRow,System.String,``0)">
+            <summary>
+            Retorna el valor del campo especificado.
+            </summary>
+            <typeparam name="T">Tipo</typeparam>
+            <param name="fila"></param>
+            <param name="nombreColumna">Nombre de la columna</param>
+            <param name="valorPorDefecto">Valor a retornar si no existe la columna o su contenido es nulo</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Datos.UtilidadesDataTable.Valor``1(System.Data.DataRow,System.String)">
+            <summary>
+            Retorna el valor del campo especificado.
+            </summary>
+            <typeparam name="T">Tipo</typeparam>
+            <param name="fila"></param>
+            <param name="nombreColumna">Nombre de la columna</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

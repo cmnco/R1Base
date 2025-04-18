@@ -1,0 +1,1214 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RetailOne.Utilidades</name>
+    </assembly>
+    <members>
+        <member name="T:RetailOne.Utilidades.Cadena">
+            <summary>
+            Identifica una cadena de texto con una cultura específica
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Cadena.#ctor(System.String,System.String)">
+            <summary>
+            Crea un objeto de tipo <see cref="T:RetailOne.Utilidades.Cadena"/> relacionando un texto con la cultura/lenguaje en la que está expresado.
+            </summary>
+            <param name="idCultura">ID de la cultura según el estándar RFC 1766 (por ejemplo, '<c>en-US</c>' o '<c>es-MX</c>'</param>
+            <param name="texto">Texto expresado en la cultura/lenguaje indicado por el parámetro <paramref name="idCultura"/></param>
+        </member>
+        <member name="P:RetailOne.Utilidades.Cadena.IDCultura">
+            <summary>
+            Obtiene el ID de la cultura con que se inicializó la cadena.
+            </summary>
+        </member>
+        <member name="P:RetailOne.Utilidades.Cadena.Texto">
+            <summary>
+            Obtiene el texto con que se inicializó el objeto.
+            </summary>
+        </member>
+        <member name="T:RetailOne.Utilidades.Cadenas">
+            <summary>
+            Representa una colección de cadenas que son equivalentes en distintos lenguajes/culturas.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Cadenas.CulturaNeutra">
+            <summary>
+            Representa el ID de la cultura usada en representaciones propias de código (no son usadas
+            para representaciones en la interfaz de usuario y, por lo tanto, son transparentes al usuario).
+            Es útil para unificar representaciones numéricas, de fecha y hora entre las capas de datos y modelo de negocio.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Cadenas.Español">
+            <summary>
+            ID de la cultura Español-Venezuela (es-MX), de uso frecuente
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Cadenas.English">
+            <summary>
+            ID de la cultura Inglés-Estados Unidos (en-US), de uso frecuente
+            </summary>
+        </member>
+        <member name="P:RetailOne.Utilidades.Cadenas.IDCulturaNeutra">
+            <summary>
+            Obtiene el ID de cultura que se especificó como neutra al crear la colección de cadenas.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Cadenas.#ctor(System.String,RetailOne.Utilidades.Cadena[])">
+            <summary>
+            Crea una colección de cadenas relacionadas especificando una o más objetos de tipo <see cref="T:RetailOne.Utilidades.Cadena"/> (cada uno,
+            representando un mismo texto o idea pero en distintas culturas). Se indica el ID de una cultura 'neutra' que definirá alguna de las 
+            cadenas como predeterminada.
+            </summary>
+            <param name="idCulturaNeutra">ID de la cultura que, a efectos de esta colección, servirá como neutra o predeterminada.</param>
+            <param name="cadenas">Conjunto de cadenas localizadas que conformarán la colección</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Cadenas.Leer(System.String,System.Object[])">
+            <summary>
+            Se genera la representación definitiva del texto encapsulado en la colección, con el uso de
+            un ID de cultura específico y los argumentos de formato que los textos pueden exigir.
+            </summary>
+            <param name="idCultura">ID de cultura en que se quiere obtener el texto de la colección. Si este parámetro
+            vale <see langword="null"/>, se intentará identificar la cultura actual con el uso del delegado <see cref="P:RetailOne.Utilidades.Cadenas.IdentificarIDCultura"/></param>
+            <param name="argumentos">Argumentos que el texto puede requerir para formatearlo</param>
+            <returns>Cadena localizada en la cultura especificada por el parámetro <paramref name="idCultura"/>, si dicha cultura
+            estaba incluida en la colección. El texto reemplaza las marcas de argumentos (por ejemplo, '{0}') con los
+            objetos indicados por el parámetro <paramref name="argumentos"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Cadenas.op_Implicit(RetailOne.Utilidades.Cadenas)~System.String">
+            <summary>
+            Representa de forma implícita una colección de cadenas como una cadena de texto usando la cultura que se 
+            haya especificado como neutra.
+            </summary>
+            <param name="cadenas">Colección de cadenas que se convertirá a texto.</param>
+            <returns>Texto de la cultura neutra especificada en la colección del parámetro <paramref name="cadenas"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Cadenas.op_Implicit(System.String)~RetailOne.Utilidades.Cadenas">
+            <summary>
+            Crea de forma implícita una colección de cadenas con una variable de tipo <see cref="T:System.String"/>.
+            </summary>
+            <param name="cadena">Único texto que conformará la colección de cadenas; este se inicializará usando como cultura neutra la constante <see cref="F:RetailOne.Utilidades.Cadenas.CulturaNeutra"/></param>
+            <returns>Objeto de tipo <see cref="T:RetailOne.Utilidades.Cadenas"/> con el texto especificado por el parámetro <paramref name="cadena"/> como cultura neutra.</returns>
+        </member>
+        <member name="P:RetailOne.Utilidades.Cadenas.Item(System.Object[])">
+            <summary>
+            Representa en la cultura neutra al texto con el uso de argumentos de formato.
+            </summary>
+            <param name="argumentos">Argumentos de formato exigidos por el texto</param>
+            <returns>Texto representado en la cultura neutra</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Cadenas.Leer(System.Type,System.String,System.Object[])">
+            <summary>
+            Obtiene una cadena dado el tipo de la clase en la que se declaró el atributo estático <see cref="T:RetailOne.Utilidades.Cadenas"/>
+            y el id de la cadena (nombre del atributo estático).
+            </summary>
+            <param name="tipoCadenas">CssClass en la que se buscará el atributo estático cuyo nombre sea igual al valor del parámetro <paramref name="id"/></param>
+            <param name="id">Nombre del atributo estático que posee la cadena a obtener</param>
+            <param name="argumentos">Argumentos opcionales que podría requerir la cadena para su formateo</param>
+            <returns>Retorna la cadena identificada en la cultura actual o, en su defecto, en la cultura neutra</returns>
+        </member>
+        <member name="P:RetailOne.Utilidades.Cadenas.IdentificarIDCultura">
+            <summary>
+            Obtiene o establece el delegado con que se podrá identificar, de acuerdo al contexto de ejecución, el ID de la cultura
+            que se utilizará para representar las colecciones de cadenas.
+            </summary>
+        </member>
+        <member name="T:RetailOne.Utilidades.IdentificarCadenaPredeterminada">
+            <summary>
+            Delegado que determina las posibles funciones con que se identificará la cultura actual en un contexto de ejecución.
+            </summary>
+            <returns>ID de la cultura que corresponda al contexto de ejecución actual</returns>
+        </member>
+        <member name="T:RetailOne.Utilidades.Coleccion`2">
+            <summary>
+            Define una colección de objetos, identificados con el uso de una clave contenida en dichos objetos.
+            </summary>
+            <typeparam name="TClave">Type de la clave de los objetos</typeparam>
+            <typeparam name="TValor">Type de los objetos almacenados. Sólo puede ser de tipo referencia y la clave debe poder extraerse del mismo con el uso de una propiedad o método</typeparam>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`2.#ctor">
+            <summary>
+            Crea una colección de objetos con claves, asumiendo que los objetos implementarán la interfaz <see cref="!:IEntidad&lt;TClave&gt;"/>
+            para la obtención de la clave (propiedad ID del interfaz). También se asume que las claves de los objetos no
+            cambiarán luego de que estos hayan sido almacenados en la colección.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`2.#ctor(System.Func{`1,`0})">
+            <summary>
+            Crea una colección de objetos con claves, especificando la forma en que se obtendrán las claves de los objetos.
+            </summary>
+            <param name="selectorID">Función que, dado un objeto de tipo <typeparamref name="TValor"/>, extraerá la clave
+            del tipo <typeparamref name="TClave"/></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`2.GetKeyForItem(`1)">
+            <summary>
+            Función que determina cómo se extraerán las claves a partir de los objetos almacenados.
+            </summary>
+            <param name="item">Objeto almacenado</param>
+            <returns>Clave extraída del objeto</returns>
+        </member>
+        <member name="P:RetailOne.Utilidades.Coleccion`2.Diccionario">
+            <summary>
+            Obtiene un diccionario con todos los objetos contenidos en la colección. Si al crearse la colección se indicó que sus claves no serían mutables,
+            se retornará directamente el diccionario interno manejado por la colección; de lo contrario, se construirá en el momento de la invocación del método un nuevo diccionario con todos los elementos y sus claves.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`2.AgregarVarios(System.Collections.Generic.IEnumerable{`1})">
+            <summary>
+            Agrega varios elementos a la colección.
+            </summary>
+            <param name="coleccion">Objeto enumerable con elementos de tipo <typeparamref name="TValor"/>. El valor puede ser <c>null</c> (no lanzará excepción)</param>
+        </member>
+        <member name="P:RetailOne.Utilidades.Coleccion`2.ClavesConcatenadas">
+            <summary>
+            Obtiene todas las claves concatenadas de los objetos almacenados, separadas con coma (',') y sin espacios.
+            Es útil al querer almacenar referencias a varios objetos en una única cadena de texto (por ejemplo, en un sólo campo de una tabla en BD).
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`2.ToString">
+            <summary>
+            Concatena las representaciones en cadena de los objetos almacenados, separadas con coma (", ", incluyendo un espacio).
+            </summary>
+            <returns>Cadena con la representación predeterminada en cadena de los objetos almacenados (usa el llamado al método <c>ToString()</c> de todos los elementos)</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`2.EliminarTodos(System.Func{`1,System.Boolean})">
+            <summary>
+            Elimina todos los elementos que cumplen con la condición del parámetro <paramref name="predicado"/>.
+            </summary>
+            <param name="predicado">Función que determinará cuáles elementos serán eliminados</param>
+        </member>
+        <member name="T:RetailOne.Utilidades.Coleccion`1">
+            <summary>
+            Define una colección de objetos sin clave (tanto para tipos de referencia como tipos primitivos.
+            </summary>
+            <typeparam name="Type">Type de los objetos almacenados. Puede ser de tipo referencia o de valor (tipos primitivos, como <c>System.Int32</c> o <c>System.DateTime</c>)</typeparam>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`1.#ctor">
+            <summary>
+            Crea una colección vacía de objetos.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Crea una colección de objetos, especificando los elementos que contendrá inicialmente.
+            </summary>
+            <param name="coleccion">Objeto enumerable con los elementos iniciales de la colección</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`1.AgregarVarios(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Agrega varios elementos a la colección.
+            </summary>
+            <param name="coleccion">Objeto enumerable con elementos de tipo <typeparamref name="Type"/>. El valor puede ser <c>null</c> (no lanzará excepción)</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`1.ToString">
+            <summary>
+            Concatena las representaciones en cadena de los objetos almacenados, separadas con coma (", ", incluyendo un espacio).
+            </summary>
+            <returns>Cadena con la representación predeterminada en cadena de los objetos almacenados (usa el llamado al método <c>ToString()</c> de todos los elementos)</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Coleccion`1.EliminarTodos(System.Func{`0,System.Boolean})">
+            <summary>
+            Elimina todos los elementos que cumplen con la condición del parámetro <paramref name="predicado"/>.
+            </summary>
+            <param name="predicado">Función que determinará cuáles elementos serán eliminados</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.Comprimir(System.Byte[])">
+            <summary>
+            Comprime la secuencia (<typeparamref name="datos"/>) mediante <see cref="T:System.IO.Compression.GZipStream"/> 
+            </summary>
+            <param name="datos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.Descomprimir(System.Byte[])">
+            <summary>
+            Descomprime la secuencia (<typeparamref name="datosComprimidos"/>) mediante <see cref="T:System.IO.Compression.GZipStream"/> 
+            </summary>
+            <param name="datosComprimidos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.ComprimirArchivo(System.String,System.String)">
+            <summary>
+            Comprimir un archivo individual
+            </summary>
+            <param name="archivoEntrada">Path del archivo de entrada</param>
+            <param name="archivoSalida">Path del archivo de salida</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.DescomprimirArchivo(System.String,System.String)">
+            <summary>
+            Descomprime un archivo individual.
+            </summary>
+            <param name="archivoComprimido">Nombre (path) del archivo de comprimido</param>
+            <param name="archivoSalida">Nombre (path) del archivo descomprimido</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.ComprimirArchivos(System.String[],System.String)">
+            <summary>
+            Comprimir múltiples archivos en un archivo zip. 
+            </summary>
+            <param name="archivosEntrada">Arreglo de archivos (paths) a comprimir</param>
+            <param name="archivoSalida">Nombre (path) del archivo de salida .Zip</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.DescomprimirArchivos(System.String,System.String)">
+            <summary>
+            Descomprimir múltiples archivos en una carpeta de salida.
+            </summary>
+            <param name="archivoComprimido">Nombre (path) del archivo de salida .Zip</param>
+            <param name="carpetaDestino">Carpeta dónde se guardaran los archivos descomprimidos.</param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.ComprimirArchivos(System.String[],System.String,System.String)">
+            <summary>
+            Comprimir múltiples archivos en un archivo zip con contraseña.
+            </summary>
+            <param name="archivosEntrada">Arreglo de archivos (paths) a comprimir</param>
+            <param name="archivoSalida">Nombre (path) del archivo de salida .Zip</param>
+            <param name="password">Contraseña para la compresión de los archivos</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.DescomprimirArchivos(System.String,System.String,System.String)">
+            <summary>
+            Descomprimir múltiples archivos en una carpeta de salida.
+            </summary>
+            <param name="archivoComprimido">Nombre (path) del archivo de salida .Zip</param>
+            <param name="carpetaDestino">Carpeta dónde se guardaran los archivos descomprimidos.</param>
+            <param name="password">Contraseña para descomprimir los archivos</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.ComprimirDirectorio(System.String,System.String,System.Action{System.String})">
+            <summary>
+            Comprime un directorio completo. 
+            </summary>
+            <param name="directorioAComprimir">Nombre (path) del directorio a comprimir</param>
+            <param name="nombreArchivoComprimido">Nombre (path) del archivo de salida .Zip</param>
+            <param name="progreso">Action para notificación de progreso de compresión</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Compresor.DescomprimirADirectorio(System.String,System.String,System.Action{System.String})">
+            <summary>
+            Descomprime un directorio.
+            </summary>
+            <param name="nombreArchivoComprimido">Nombre (path) del archivo de comprimido .Zip</param>
+            <param name="carpetaDestino">Nombre (path) del directorio destino</param>
+            <param name="progreso">Action para notificación de progreso de descompresión</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.ExcepcionControlada.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param nombre="nombre"></param>
+            <param nombre="mensaje"></param>
+            <param nombre="codigo"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.ExcepcionControlada.#ctor(System.Int32,System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param nombre="nombre"></param>
+            <param nombre="mensaje"></param>
+            <param nombre="codigo"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.ExcepcionControlada.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param nombre="mensaje"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.ExcepcionControlada.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param nombre="nombre"></param>
+            <param nombre="mensaje"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.ExcepcionControlada.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param nombre="nombre"></param>
+            <param nombre="mensaje"></param>
+            <param nombre="codigo"></param>
+            <param nombre="innerException"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.ExcepcionControlada.#ctor(System.Int32,System.String,System.String,System.Exception,System.String)">
+            <summary>
+            
+            </summary>
+            <param nombre="nombre"></param>
+            <param nombre="mensaje"></param>
+            <param nombre="codigo"></param>
+            <param nombre="innerException"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Json.Serializar(System.Object)">
+            <summary>
+            Serializa el bojeto ignorando valores nulos y propiedades establecidas como JsonIgnore.
+            </summary>
+            <param name="objeto">Objeto a serializar.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Json.Serializar(System.Object,System.Boolean)">
+            <summary>
+            Serializa el bojeto ignorando valores nulos.
+            </summary>
+            <param name="objeto">Objeto a serializar.</param>
+            <param name="incluirTodasLasPropiedades">Indica si se deben serializar todas las propiedades incluyendo las marcadas como JsonIgnore.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Json.Serializar(System.Object,System.Boolean,RetailOne.Utilidades.Json.GestionValoresNulos)">
+            <summary>
+            Serializa el bojeto según los parámetros establecidos.
+            </summary>
+            <param name="objeto">Objeto a serializar.</param>
+            <param name="incluirTodasLasPropiedades">Indica si se deben serializar las propiedades/atributos con valores nulos.</param>
+            <param name="valoresNulos">Indica si se deben incluir o ignorar las propiedades con valores nulos.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Json.Serializar(System.Object,System.Boolean,RetailOne.Utilidades.Json.GestionValoresNulos,RetailOne.Utilidades.Json.Formato)">
+            <summary>
+            Serializa el bojeto según los parámetros establecidos.
+            </summary>
+            <param name="objeto">Objeto a serializar.</param>
+            <param name="incluirTodasLasPropiedades">Indica si se deben serializar las propiedades/atributos con valores nulos.</param>
+            <param name="valoresNulos">Indica si se deben incluir o ignorar las propiedades con valores nulos.</param>
+            <param name="formato">Indica si el json se debe formatear con indentado.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Json.Deserializar``1(System.String)">
+            <summary>
+            Deserializa el objeto json al tipo indicado.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="json"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Json.ObjetoABytes(System.Object)">
+            <summary>
+            Serializa, comprime y encripta el objeto.
+            </summary>
+            <param name="objeto">Objeto a serializar.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Json.BytesAObjeto``1(System.Byte[])">
+            <summary>
+            decifra, descomprime y deserializa el arreglo de bytes.
+            </summary>
+            <typeparam name="T">Tipo del objeto a deserializar.</typeparam>
+            <param name="bytes"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RetailOne.Utilidades.Recursos.Excepciones">
+            <summary>
+            Definición de las distintas cadenas usadas al lanzar excepciones.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ArchivoNoExisteNoAccesible">
+            <summary>
+            El archivo '{0}' no existe o no es accesible.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.DescriptorXmlNuloOVacío">
+            <summary>
+            El descriptor Xml es nulo o vacío.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.DescriptorXmlFormatoIncorrecto">
+            <summary>
+            El descriptor Xml no tiene un formato correcto.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ArchivoFormatoIncorrecto">
+            <summary>
+            El archivo no tiene un formato correcto.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ClaseNoEncontradaEnNS">
+            <summary>
+            No se puede hallar la clase '{0}' en ninguno de los espacios de nombre identificados.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ErrorAlRecuperarObjetoDeSecuencia">
+            <summary>
+            Error al intentar recuperar el objeto de la secuencia.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ErrorAlSerializarObjeto">
+            <summary>
+            Error al intentar serializar el objeto. Tipo: '{0}'.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.NoSeHaProporcionadoListaCorreos">
+            <summary>
+            No se ha proporcionado una lista de correos.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ElCorreoNotieneFormatoValido">
+            <summary>
+            El correo '{0}' no tiene un formato válido.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ValorNoValido">
+            <summary>
+            Valor no válido.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Recursos.Excepciones.ArchivoComprimidoNoValido">
+            <summary>
+            El archivo comprimido no es valido o está encriptado. Archivo:'{0}'.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Directorio.Existe(System.String,System.Boolean)">
+            <summary>
+            Valida si existe el directorio y si cuenta con permisos de escritura.
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Directorio.Crear(System.String)">
+            <summary>
+            Crea el directorio especificado en caso de no existir y establece los permisos de escritura en el mismo.
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Archivo.Existe(System.String)">
+            <summary>
+            Verifica si existe un archivo.
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Archivo.Escribir(System.String,System.String)">
+            <summary>
+            Crea el archivo especificado y escribe el contenido correspondiente.
+            </summary>
+            <param name="path"></param>
+            <param name="contenido"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RetailOne.Utilidades.UtilidadesBooleanos">
+            <summary>
+            Provee métodos de utilidad para el manejo de booleanos
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesBooleanos.ValorChar(System.Boolean)">
+            <summary>
+            Método que regresa 'Y' si el valor es True y 'N' si el valor es False
+            </summary>
+            <param name="valor"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RetailOne.Utilidades.UtilidadesCadenas">
+            <summary>
+            Provee métodos de utilidad para el manejo de cadenas de texto.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EsNumeroLong(System.String)">
+            <summary>
+            Determina si la cadena es "parseable" a "long" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EsNumeroInt(System.String)">
+            <summary>
+            Determina si la cadena es "parseable" a "int" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EsNumeroDecimal(System.String)">
+            <summary>
+            Determina si la cadena es "parseable" a "decimal" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EsNumeroShort(System.String)">
+            <summary>
+            Determina si la cadena es "parseable" a "short" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EsNumeroDouble(System.String)">
+            <summary>
+            Determina si la cadena es "parseable" a "int" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ToLong(System.String)">
+            <summary>
+            Método que regresa la cadena "parseada" a "long" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ToInt(System.String)">
+            <summary>
+            Método que regresa la cadena "parseada" a "int" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ToDouble(System.String)">
+            <summary>
+            Método que regresa la cadena "parseada" a "Double" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ToDecimal(System.String)">
+            <summary>
+            Método que regresa la cadena "parseada" a "Decimal" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ToShort(System.String)">
+            <summary>
+            Método que regresa la cadena "parseada" a "Short" 
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.NoDebeSerNullOVacio(System.String,System.String)">
+            <summary>
+            Método que valida si el valor es null o vacio. De serlo se manda la Excepcion controlada 11156 con la referencia proporcionada
+            </summary>
+            <param name="valor"></param>
+            <param name="referencia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ObtnerCorreosValidos(System.String)">
+            <summary>
+            Separa una lista de correos concatenada con cualquiera de los caracteres ";" (punto y coma), "," (coma) o  "|" (Barra vertical) y valida el formato de cada correo obtenido.
+            </summary>
+            <param name="listaConcatenada">Lista concatenada de correos</param>
+            <returns>Retorna lista de correos obtenida de la cadena</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ObtnerCadenaCorreosValidos(System.String)">
+            <summary>
+            Regresa una cadena con correos validos concatenado con cualquiera de los caracteres ";" (punto y coma), "," (coma) o  "|" (Barra vertical) y valida el formato de cada correo obtenido.
+            </summary>
+            <param name="listaConcatenada">Lista concatenada de correos</param>
+            <returns>Retorna lista de correos obtenida de la cadena</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.NormalizarEspacios(System.String,System.Int32)">
+            <summary>
+            Crea uniformidad en los espacios blancos de una cadena de texto, reemplazando todos los espacios (independientemente de su longitud)
+            con espacios simples dada la logintud especificada por el parámetro <paramref name="cantidadEspaciosMaximoEntrePalabras"/>
+            </summary>
+            <param name="entrada">Texto de entrada</param>
+            <param name="cantidadEspaciosMaximoEntrePalabras">Cantidad de caracteres en que se normalizarán los espacios (por lo general, 1)</param>
+            <returns>Texto con los espacios normalizados</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.SoloNumeros(System.String)">
+            <summary>
+            Devuelve una cadena de texto que contendrá sólo los números de la cadena de entrada. Todos los
+            demás caracteres alfabéticos y especiales (como puntuaciones y espacios) son eliminados.
+            </summary>
+            <param name="entrada">Texto de entrada</param>
+            <returns>Cadena que contiene únicamente los números en el texto de entrada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.CambiarATipo``1(System.String,System.IFormatProvider)">
+            <summary>
+            Realiza una conversión de tipos entre una cadena de texto y el tipo especificado en el parámetro <typeparam name="T"/>.
+            Dependiendo del tipo al que se convertirá la cadena, así como del proveedor de formato, esta deberá cumplir con un formato específico.
+            </summary>
+            <typeparam name="T">Tipo de dato al que se convertirá la cadena</typeparam>
+            <param name="entrada">Texto de entrada</param>
+            <param name="proveedor">Proveedor de formato que brinda detalles de cómo se deben hacer las interpretaciones de los datos numéricos y de fecha.
+            Si se intenta hacer la conversión de un texto proveniente de la interacción con el usuario en pantalla, será recomendable
+            usar el proveedor de formato de la cultura especificada en la configuración de la aplicación.</param>
+            <returns>Objeto convertido con el tipo de datos definido por el parámetro <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.CambiarATipo``1(System.String,``0,System.IFormatProvider)">
+            <summary>
+            Realiza una conversión de tipos entre una cadena de texto y el tipo especificado en el parámetro <typeparam name="T"/>.
+            Dependiendo del tipo al que se convertirá la cadena, así como del proveedor de formato, esta deberá cumplir con un formato específico.
+            </summary>
+            <typeparam name="T">Tipo de dato al que se convertirá la cadena</typeparam>
+            <param name="entrada">Texto de entrada</param>
+            <param name="proveedor">Proveedor de formato que brinda detalles de cómo se deben hacer las interpretaciones de los datos numéricos y de fecha.
+            Si se intenta hacer la conversión de un texto proveniente de la interacción con el usuario en pantalla, será recomendable
+            usar el proveedor de formato de la cultura especificada en la configuración de la aplicación.</param>
+            <param name="valorARetornarSiFallaConversion">Valor que deberá retornar en caso de fallar la conversión de tipos</param>
+            <returns>Objeto convertido con el tipo de datos definido por el parámetro <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ValidarEmail(System.String)">
+            <summary>
+            Valida que el texto de entrada tenga un formato válido de e-mail
+            </summary>
+            <param name="email">Texto de entrada</param>
+            <returns>Retorna <c>true</c> si el texto es una dirección de e-mail válida; de lo contrario, <c>false</c></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ValidarCadenaAlfanumerica(System.String)">
+            <summary>
+            Valida que el texto de entrada contenga caracteres alfanuméricos (letras, números, guiones bajos)
+            </summary>
+            <param name="cadena">Texto de entrada</param>
+            <returns>Retorna <c>true</c> si el texto es vacío o contiene caracteres alfanuméricos; de lo contrario, <c>false</c></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ValidarEntero(System.String)">
+            <summary>
+            Valida que el texto posea únicamente una cifra numérica entera (sin decimales ni otros caracteres, sólo números).
+            </summary>
+            <param name="cadena">Texto de entrada</param>
+            <returns>Retorna <c>true</c> si el texto contiene únicamente dígitos numéricos; de lo contrario, <c>false</c></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ValidarDecimal(System.String)">
+            <summary>
+            Valida que el texto posea una cifra numérica entera o decimal.
+            </summary>
+            <param name="cadena">Texto de entrada</param>
+            <returns>Retorna <c>true</c> si el texto contiene únicamente dígitos numéricos o separadores decimales (coma o punto); de lo contrario, <c>false</c></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.ValidarExpresion(System.String,System.String)">
+            <summary>
+            Valida el cumplimiento de una expresión regular en un texto.
+            </summary>
+            <param name="entrada">Texto de entrada</param>
+            <param name="expresionRegex">Expresión regular que se evaluará</param>
+            <returns>Retorna <c>true</c> si el texto cumple aunque sea una vez con la expresión regular; de lo contrario, <c>false</c></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.SepararCadenaEnumerada``1(System.String,System.String)">
+            <summary>
+            Separa los items de una cadena que enumera, distinguidos por un separador, distintos valores, y los convierte a un nuevo tipo de datos.
+            De acuerdo al parámetro de tipo <typeparamref name="Type"/>, los elementos enumerados en el texto deben cumplir con un formato determinado.
+            </summary>
+            <typeparam name="Type">Type de datos al que se convertirán los elementos separados</typeparam>
+            <param name="cadena">Texto de entrada</param>
+            <param name="separador">Texto o carácter que separa la representación de cada elemento en la cadena</param>
+            <returns>Enumerable tipificado con los distintos elementos enumerados en la cadena de entrada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.SepararCadenaEnumerada``1(System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Separa los items de una cadena que enumera, distinguidos por un separador, distintos valores, y los convierte a un nuevo tipo de datos.
+            De acuerdo al parámetro de tipo <typeparamref name="Type"/>, los elementos enumerados en el texto deben cumplir con un formato determinado.
+            </summary>
+            <typeparam name="Type">Type de datos al que se convertirán los elementos separados</typeparam>
+            <param name="cadena">Texto de entrada</param>
+            <param name="separador">Texto o carácter que separa la representación de cada elemento en la cadena</param>
+            <param name="trimEnCadaElemento">Si se indica <c>true</c>, se limpiarán los espacios en blanco que puedan tener los elementos luego de ser dividos por el separador; de lo contrario, se intentará hacer la conversión de tipo sin eliminar cualquier espacio en blanco</param>
+            <param name="mantenerElementosNulos">Si se indica <c>true</c>, se incluirán en el enumerado los items que hayan estado vacíos; de lo contrario, se omitirán</param>
+            <returns>Enumerable tipificado con los distintos elementos enumerados en la cadena de entrada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EnumerarDadoMaximosCaracteres``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            Genera una cadena que concatena, con el uso de un separador de texto, la evaluación del método <c>ToString()</c> de todos los elementos de un enumerable.
+            </summary>
+            <typeparam name="Type">Type de los elementos de entrada</typeparam>
+            <param name="elementos">Enumerable con los elementos que se concatenarán en la lista textual</param>
+            <param name="separador">Separador que se usará entre las expresiones de los elementos</param>
+            <returns>Cadena de texto con todas las evaluaciones <c>ToString()</c> de la lista de entrada, separadas por el parámetro <paramref name="separador"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EnumerarDadoMaximosCaracteres``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.String)">
+            <summary>
+            Genera una cadena que concatena, con el uso de un separador de texto, la evaluación del método <c>ToString()</c> de todos los elementos de un enumerable.
+            </summary>
+            <typeparam name="Type">Type de los elementos de entrada</typeparam>
+            <param name="elementos">Enumerable con los elementos que se concatenarán en la lista textual</param>
+            <param name="selectorTexto">Función que extraerá de cada objeto enumerado el dato a concatenar en la cadena de texto</param>
+            <param name="separador">Separador que se usará entre las expresiones de los elementos</param>
+            <returns>Cadena de texto con todas las evaluaciones <c>ToString()</c> de la lista de entrada, separadas por el parámetro <paramref name="separador"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EnumerarDadoMaximosCaracteres``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Int32,System.Boolean)">
+            <summary>
+            Genera una cadena que concatena, con el uso de una coma y espacio como separador (", "), una expresión evaluada sobre todos los elementos de un enumerable.
+            </summary>
+            <typeparam name="Type">Type de los elementos de entrada</typeparam>
+            <param name="elementos">Enumerable con los elementos que se concatenarán en la lista textual</param>
+            <param name="selectorTexto">Función que extraerá de cada objeto enumerado el dato a concatenar en la cadena de texto</param>
+            <param name="máximaCantidadCaracteres">Limita la cantidad de caracteres que podrá tomar la cadena definitiva; se concatenarán sólo los elementos completos que, incluyendo los separadores, no totalicen más de dicha cantidad de caracteres.</param>
+            <param name="puntosSuspensivosAutomáticos">Si es <see langword="true"/>, agrega puntos suspensivos ('...', una cadena de tres caracteres de punto convencional) al final del texto recortado si este no pudo representarse por completo en el límite dado por <paramref name="máximaCantidadCaracteres"/></param>
+            <returns>Cadena de texto con todas las evaluaciones <c>ToString()</c> de la lista de entrada, separadas por una coma seguida de un espacio (', ')</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EnumerarDadoMaximosCaracteres``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Int32,System.Boolean,System.String)">
+            <summary>
+            Genera una cadena que concatena, con el uso de un separador de texto, una expresión evaluada sobre todos los elementos de un enumerable.
+            </summary>
+            <typeparam name="Type">Type de los elementos de entrada</typeparam>
+            <param name="elementos">Enumerable con los elementos que se concatenarán en la lista textual</param>
+            <param name="selectorTexto">Función que extraerá de cada objeto enumerado el dato a concatenar en la cadena de texto</param>
+            <param name="maximaCantidadCaracteres">Limita la cantidad de caracteres que podrá tomar la cadena definitiva; se concatenarán sólo los elementos completos que, incluyendo los separadores, no totalicen más de dicha cantidad de caracteres.</param>
+            <param name="puntosSuspensivosAutomaticos">Si es <see langword="true"/>, agrega puntos suspensivos ('...', una cadena de tres caracteres de punto convencional) al final del texto recortado si este no pudo representarse por completo en el límite dado por <paramref name="maximaCantidadCaracteres"/></param>
+            <param name="separador">Separador que se usará entre las expresiones de los elementos</param>
+            <returns>Cadena de texto con todas las evaluaciones <c>ToString()</c> de la lista de entrada, separadas por el parámetro <paramref name="separador"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.SiEsNuloOVacio(System.String,System.String)">
+            <summary>
+            Si la cadena es nula o vacía, la reemplaza por una nueva cadena.
+            </summary>
+            <param name="entrada">Texto de entrada</param>
+            <param name="reemplazo">Cadena con que se reemplazará la de entrada si esta fuese nula o vacía</param>
+            <returns>Si el texto de entrada es nulo o vacío, retornará la cadena del parámetro <paramref name="reemplazo"/>, de lo contrario,
+            retornará la cadena original</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesCadenas.EsNuloOVacio(System.String)">
+            <summary>
+            Determina si una cadena es nula o vacía. Una cadena que sólo contenga espacios en blanco (tabulaciones,
+            saltos de línea, espacios regulares, etc.) será considerada como vacía.
+            </summary>
+            <param name="entrada">Texto de entrada</param>
+            <returns><c>True</c> si el texto es nulo, vacío o sólo contiene caracteres de espacio</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumerosJhon.DebeSerPositivo(System.Int32,System.String)">
+            <summary>
+            Método que valida que el valor sea igual o mayor a 0. De lo contrario se manda la Excepcion controlada 11156 con la referencia proporcionada
+            </summary>
+            <param name="valor"></param>
+            <param name="referencia"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumerosJhon.DebeSerPositivo(System.Decimal,System.String)">
+            <summary>
+            Método que valida que el valor sea igual o mayor a 0. De lo contrario se manda la Excepcion controlada 11156 con la referencia proporcionada
+            </summary>
+            <param name="valor"></param>
+            <param name="referencia"></param>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumerosJhon.DebeSerMayorQueCero(System.Decimal,System.String)">
+            <summary>
+            Método que valida que el valor sea mayor a 0. De lo contrario se manda la Excepcion controlada 111049 con la referencia proporcionada
+            </summary>
+            <param name="valor"></param>
+            <param name="referencia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumerosJhon.DebeSerMayorQueCero(System.Int32,System.String)">
+            <summary>
+            Método que valida que el valor sea mayor a 0. De lo contrario se manda la Excepcion controlada 111049 con la referencia proporcionada
+            </summary>
+            <param name="valor"></param>
+            <param name="referencia"></param>
+            <returns></returns>
+        </member>
+        <member name="F:RetailOne.Utilidades.Excepciones.ValorDebeSerMayorACero">
+            <summary>
+            El valor debe ser mayor a 0.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Excepciones.ValorNoValido">
+            <summary>
+            Valor no válido.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Excepciones.NoSeHaProporcionadoListaCorreos">
+            <summary>
+            No se ha proporcionado la lista de correos.
+            </summary>
+        </member>
+        <member name="T:RetailOne.Utilidades.UtilidadesNumeros">
+            <summary>
+            Provee métodos de utilidad para el manejo de números
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumeros.EsPositivo(System.Int32)">
+            <summary>
+            Método que valida que el valor sea igual o mayor a 0
+            </summary>
+            <param name="valor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumeros.EsPositivo(System.Decimal)">
+            <summary>
+            Método que valida que el valor sea igual o mayor a 0
+            </summary>
+            <param name="valor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumeros.EsMayorQueCero(System.Int32)">
+            <summary>
+            Método que valida que el valor sea mayor a 0
+            </summary>
+            <param name="valor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumeros.EsMayorQueCero(System.Decimal)">
+            <summary>
+            Método que valida que el valor sea mayor a 0
+            </summary>
+            <param name="valor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumeros.Redondear(System.Decimal,System.Int32)">
+            <summary>
+            Método que regresa el valor redondeado a los decimales proporcionados
+            </summary>
+            <param name="valor"></param>
+            <param name="decimales"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesNumeros.Redondear(System.Double,System.Int32)">
+            <summary>
+            Método que regresa el valor redondeado a los decimales proporcionados
+            </summary>
+            <param name="valor"></param>
+            <param name="decimales"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RetailOne.Utilidades.UtilidadesObjetos">
+            <summary>
+            Provee métodos de extensión generales para cualquier tipo de objetos.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.SiNoEsNulo``2(``0,System.Func{``0,``1})">
+            <summary>
+            Evalúa un objeto de referencia y retorna una expresión basada en él si el objeto no es nulo.
+            Es muy útil para simplificar el acceso a propiedades o métodos de objetos que pueden ser nulos.
+            <para>En lugar de escribir:</para>
+            <code>string NombreParticipante = Participante != null ? Participante.Nombre : null;</code>
+            <para>Se podrá representar así:</para>
+            <code>string NombreParticipante = Participante.SiNoEsNulo(x => x.Nombre);</code>
+            </summary>
+            <typeparam name="TObjeto">Type del objeto; debe ser un tipo de referencia</typeparam>
+            <typeparam name="TRetorno">Type que retorna la expresión o dato extraído del objeto</typeparam>
+            <param name="objeto">Objeto que se evaluará</param>
+            <param name="seleccion">Función que extraerá un dato del objeto</param>
+            <returns>Si el objeto es nulo, retorna el valor por defecto del tipo de retorno (<typeparamref name="TRetorno"/>); de lo contrario,
+            se evalúa la función <paramref name="seleccion"/> sobre el objeto y se retorna el resultado de dicha evaluación</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.SiNoEsNulo``1(``0,System.Action{``0})">
+            <summary>
+            Evalúa un objeto de referencia y ejecuta una acción basada en él si el objeto no es nulo.
+            Es muy útil para simplificar el acceso a métodos de objetos que pueden ser nulos.
+            <para>En lugar de escribir:</para>
+            <code>if (ElementoExterno != null) ElementoExterno.Actualizar(referencia); //pudiendo ser nulo ElementoExterno</code>
+            <para>Se podrá representar así:</para>
+            <code>ElementoExterno.SiNoEsNulo(x => x.Actualizar(referencia));</code>
+            </summary>
+            <typeparam name="TObjeto">Type del objeto; debe ser un tipo de referencia</typeparam>
+            <param name="objeto">Objeto que se evaluará</param>
+            <param name="seleccion">Acción que se ejecutará</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.SerializarObjetoJson(System.Object)">
+            <summary>
+            Serializa un objeto obteniendo su representación simple en la sintaxis JSON (JavaScript Object Notation).
+            Es útil para la serialización de objetos que serán enviados a código cliente a través de respuestas a solicitudes AJAX.
+            </summary>
+            <param name="objeto">Objeto que se desea serializar</param>
+            <returns>Cadena con la representación JSON del objeto</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.DeserializarObjetoJson(System.String)">
+            <summary>
+            Deserializa un objeto (sin tipo de datos explícito) a partir de su representación JSON (JavaScript Object Notation), 
+            obteniéndose un "árbol de diccionarios" de tipo <c>Dictionary&lt;string, object&gt;</c>.
+            </summary>
+            <param name="objetoSerializado">Cadena con la representación JSON del objeto a deserializar</param>
+            <returns>TreeView de diccionarios de tipo <c>Dictionary&lt;string, object&gt;</c> con la deserialización no-tipificada
+            de la cadena de entrada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.DeserializarObjetoJson``1(System.String)">
+            <summary>
+            Deserializa un objeto a partir de su representación JSON (JavaScript Object Notation). 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="objetoSerializado"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.SerializarObjeto(System.Object)">
+            <summary>
+            Serializa un objeto en formato XML, manteniendo información de su tipo de datos y permitiendo su posterior reconstrucción
+            bajo la misma clase.
+            </summary>
+            <param name="objeto">Objeto que se desea serializar</param>
+            <returns>Cadena con la representación serializada del objeto</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.SerializarObjeto(System.Object,System.Type)">
+            <summary>
+            Serializa un objeto en formato XML, manteniendo información de su tipo de datos y permitiendo su posterior reconstrucción
+            bajo la misma clase.
+            </summary>
+            <param name="objeto">Objeto que se desea serializar</param>
+            <param name="tipo">Type de datos del objeto</param>
+            <returns>Cadena con la representación serializada del objeto</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.DeserializarObjeto(System.String,System.Type)">
+            <summary>
+            Deserializa una expresión de cadena que posee la serialización XML del objeto, especificando el tipo de datos en el que
+            se reconstruirá.
+            </summary>
+            <param name="objetoSerializado">Cadena con la expresión XML de la serialización previa</param>
+            <param name="tipo">Type de datos en que se materializará el objeto deserializado</param>
+            <returns>Objeto deserializado</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.Descendientes``1(``0,System.Func{``0,System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Enumera todos los descendientes de un objeto cuya clase posee una estructura jerárquica.
+            </summary>
+            <typeparam name="TipoObjeto">CssClass que define a todos los objetos de la jerarquía</typeparam>
+            <param name="objeto">Objeto raíz del cual se quieren enumerar sus descendientes</param>
+            <param name="funcionHijos">Función que, dado un objeto de la clase <typeparamref name="TipoObjeto"/>, enumere sus hijos directos.</param>
+            <returns>Enumerable con todos los descendientes del objeto en su estructura jerárquica</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.BytesAObjeto``1(System.Byte[],System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="bytes"></param>
+            <param name="knownTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.ObjetoABytes``1(``0,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Serializa, comprime y encripta el objeto (<typeparamref name="objeto"/>).
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="objeto">Objeto que se desea serializar</param>
+            <param name="tiposConocidos">Tipos que pueden estar presentes en el objeto principal</param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.Clonar(System.Object)">
+            <summary>
+            Clona objetos con atributo "Serializable".
+            </summary>
+            <param name="oObjetoOrigen">Objeto origen</param>
+            <returns>Objeto clonado</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesObjetos.SinReferencia(System.Object[])">
+            <summary>
+            Indica al compilador que ignore las referencias no utilizadas. Esto elimina el "warning" por las declaraciones no utilizadas.
+            </summary>
+            <param name="o">Referencia no utilizada.</param>
+        </member>
+        <member name="T:RetailOne.Utilidades.Encriptacion">
+            <summary>
+            Provee funciones para la encriptación y decriptación de cadenas de texto.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.Encriptacion.#ctor(System.Byte[],System.Byte[])">
+            <summary>
+            Crea un objeto <see cref="T:RetailOne.Utilidades.Encriptacion"/> con el uso de la clave secreta y el vector de inicialización.
+            </summary>
+            <param name="clave1">Clave secreta con que se realizará la encriptación/decriptación. Debe poseer 16 ó 24 bytes (128 ó 192 bits)</param>
+            <param name="clave2">Vector de inicialización. Debe poseer al menos 8 bytes (64 bits)</param>
+        </member>
+        <member name="M:RetailOne.Utilidades.Encriptacion.Encriptar(System.String)">
+            <summary>
+            Encripta un texto, devolviendo la cadena de bytes correspondiente
+            </summary>
+            <param name="texto">Texto a encriptar</param>
+            <returns>Arreglo de bytes con la información encriptada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Encriptacion.Encriptar(System.Byte[])">
+            <summary>
+            Encripta un arreglo de bytes, devolviendo la secuencia de bytes correspondiente. 
+            Útil para encriptar los bytes provenientes de un archivo o de una compresión (<see cref="T:System.IO.Compression.GZipStream"/> y <see cref="T:RetailOne.Utilidades.Compresor"/>).
+            </summary>
+            <param name="datos">Arreglo de bytes a encriptar</param>
+            <returns>Arreglo de bytes con la información encriptada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Encriptacion.Desencriptar(System.Byte[])">
+            <summary>
+            Descifra una cadena de bytes, devolviendo el texto original
+            </summary>
+            <param name="datos">Arreglo de bytes con la información encriptada</param>
+            <returns>Texto descifrado</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Encriptacion.DesencriptarEnBytes(System.Byte[])">
+            <summary>
+            Descifra una cadena de bytes 
+            </summary>
+            <param name="datos">Arreglo de bytes con la información encriptada</param>
+            <returns>Arreglo de bytes descifrado</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Encriptacion.ConvertirABase64(System.String)">
+            <summary>
+            Encripta el texto de entrada, devolviendo una cadena en formato base64
+            </summary>
+            <param name="texto">Texto a encriptar</param>
+            <returns>Cadena de texto encriptada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.Encriptacion.ObtenerDeBase64(System.String)">
+            <summary>
+            Descifra una cadena encriptada y en formato base64, devolviendo el texto original
+            </summary>
+            <param name="base64String">Cadena base 64 con la información encriptada</param>
+            <returns>Texto descifrado</returns>
+        </member>
+        <member name="T:RetailOne.Utilidades.Estado">
+            <summary>
+            Representa los estados de activación de una entidad (para determinar si un objeto se considera activo o inactivo).
+            El valor numérico encapsulado es de tipo <see cref="T:System.Byte"/>.
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Estado.Activo">
+            <summary>
+            Active (habilitado)
+            </summary>
+        </member>
+        <member name="F:RetailOne.Utilidades.Estado.Inactivo">
+            <summary>
+            Inactive (deshabilitado)
+            </summary>
+        </member>
+        <member name="T:RetailOne.Utilidades.UtilidadesEnum">
+            <summary>
+            Provee métodos de utilidad para el manejo de enumerados.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesEnum.Descripcion(System.Enum)">
+            <summary>
+            Obtiene la descripción textual de un valor enumerado, dadas las definiciones de atributos <see cref="T:System.ComponentModel.DescriptionAttribute"/> ó, en última instancia, usándose el nombre del valor en el enumerado.
+            </summary>
+            <param name="entrada">Value enumerado</param>
+            <returns>Descripción textual extraída del atributo <see cref="T:System.ComponentModel.DescriptionAttribute"/> o del nombre del valor</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesEnum.ValorEnCadena(System.Enum)">
+            <summary>
+            Representa como cadena de texto el valor numérico encapsulado por un valor enumerado.
+            </summary>
+            <param name="enumerado">Value enumerado</param>
+            <returns>Cadena de texto con el valor numérico encapsulado por el valor del parámetro <paramref name="enumerado"/></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesEnum.ObtenerDescripciones(System.Type,System.Boolean)">
+            <summary>
+            Devuelve un diccionario que vincula los valores de un enumerado con sus descripciones textuales, filtrándolas por categorías (<seealso cref="!:CategoríaEnumAttribute"/>).
+            </summary>
+            <param name="tipoEnum">Objeto de tipo <see cref="T:System.Type"/> que refiera al tipo enumerado cuyas descripciones se extraerán</param>
+            <param name="ordenarPorValor">Si se indica <c>true</c>, los elementos se listarán ordenados por el valor numérico encapsulado de los items; de lo contrario, se mostrarán en el orden que los liste el CLR.</param>
+            <returns>Diccionario que lista los valores del enumerado
+            Las claves del diccionario son los valores numéricos encapsulados, y los valores del diccionario son las descripciones textuales de los mismos</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesEnum.DescripcionesCompletas(System.Enum)">
+            <summary>
+            <para>Devuelve un diccionario que vincula los valores de un enumerado con sus descripciones textuales.</para>
+            <para>Es equivalente a llamar al método <see cref="M:RetailOne.Utilidades.UtilidadesEnum.Descripciones(System.Type)"/> y pasarle como parámetro el tipo del parámetro <paramref name="cualquierValorDelEnumerado"/>:</para>
+            <code>
+            Descripciones(cualquierValorDelEnumerado.GetType())
+            </code>
+            </summary>
+            <param name="cualquierValorDelEnumerado">Cualquier valor del enumerado cuyas descripciones completas se quieren extraer</param>
+            <returns>Diccionario que lista todos los valores del tipo enumerado.
+            Las claves del diccionario son los valores numéricos encapsulados, y los valores del diccionario son las descripciones textuales de los mismos</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesEnum.Descripciones``1">
+            <summary>
+            Devuelve un diccionario que vincula los valores de un tipo enumerado con sus descripciones textuales.
+            </summary>
+            <typeparam name="Type">Type enumerado cuyas descripciones y valores se desean extraer</typeparam>
+            <returns>Diccionario que lista todos los valores del tipo enumerado.
+            Las claves del diccionario son los valores numéricos encapsulados, y los valores del diccionario son las descripciones textuales de los mismos</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesEnum.Descripciones(System.Type)">
+            <summary>
+            Devuelve un diccionario que vincula los valores de un tipo enumerado con sus descripciones textuales.
+            </summary>
+            <param name="tipoEnumerado">Objeto <see cref="T:System.Type"/> con el tipo enumerado cuyas descripciones y valores se desean extraer</param>
+            <returns>Diccionario que lista todos los valores del tipo enumerado.
+            Las claves del diccionario son los valores numéricos encapsulados, y los valores del diccionario son las descripciones textuales de los mismos</returns>
+        </member>
+        <member name="P:RetailOne.Utilidades.UtilidadesEnum.CacheDescripcionesEnum">
+            <summary>
+            Mantiene almacenadas en tiempo de ejecución las descripciones extraídas de los tipos enumerados.
+            Dado que normalmente esta información se extra vía reflexión (y es un proceso costoso en términos de recursos de ejecución),
+            el uso de esta caché acelerará la adquisición posterior de las descripciones previamente solicitadas.
+            </summary>
+        </member>
+        <member name="T:RetailOne.Utilidades.UtilidadesTipos">
+            <summary>
+            Provee métodos de extensión para el manejo de tipos de datos.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesTipos.EsTipoNulable(System.Type)">
+            <summary>
+            Determina si un tipo es o "no nulable".
+            </summary>
+            <param name="tipo"><see cref="T:System.Type"/> con la definición del tipo a evaluar</param>
+            <returns>Retorna <c>true</c> si el tipo es nulable (como int? ó Nullable&lt;bool&gt;); de lo contrario, retorna <c>false</c></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesTipos.ObtenerCampo(System.Type,System.String)">
+            <summary>
+            Devuelve un objeto <see cref="T:System.Reflection.FieldInfo"/> con la información de un campo de un tipo,
+            independientemente de la clase de la jerarquía de herencia en la que se haya declarado dicho campo.
+            </summary>
+            <param name="tipo"><see cref="T:System.Type"/> del cual se desea extraer el campo</param>
+            <param name="nombreCampo">Nombre del campo que se va a buscar</param>
+            <returns>Objeto con la representación por defecto del tipo de datos</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesTipos.ObtenerCampo(System.Type,System.String,System.Nullable{System.Reflection.BindingFlags})">
+            <summary>
+            Devuelve un objeto <see cref="T:System.Reflection.FieldInfo"/> con la información de un campo de un tipo,
+            independientemente de la clase de la jerarquía de herencia en la que se haya declarado dicho campo.
+            </summary>
+            <param name="tipo"><see cref="T:System.Type"/> del cual se desea extraer el campo</param>
+            <param name="nombreCampo">Nombre del campo que se va a buscar</param>
+            <param name="opciones">Opciones para la búsqueda</param>
+            <returns>Objeto con la representación por defecto del tipo de datos</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesTipos.HoraANumero(System.Nullable{System.TimeSpan})">
+            <summary>
+            Convertir un TimeSpan a valor numérico (Representacion utilizada por SAP para los campos hora en base de datos). 
+            </summary>
+            <param name="hora"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesTipos.HoraANumero(System.Nullable{System.TimeSpan},System.Boolean)">
+            <summary>
+            Convertir un TimeSpan a valor numérico (Representacion utilizada por SAP para los campos hora en base de datos). 
+            </summary>
+            <param name="hora"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesTipos.NumeroAHora(System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Convertir un valor numérico a TimeSpan (Recuperar el objeto hora a partir del formato numérico utilizado por SAP en base de datos).
+            </summary>
+            <param name="valor"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RetailOne.Utilidades.UtilidadesXml">
+            <summary>
+            Provee métodos de utilidad para la validación, parseo y manejo de archivos y cadenas XML.
+            </summary>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesXml.ValidarXml(System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Valida un archivo XML en contra de los esquemas definidos para el espacio de nombres del mismo y devuelve el XML
+            parseado.
+            </summary>
+            <param name="direcciónArchivoXml">Dirección del archivo XML</param>
+            <param name="espacioDeNombres">Espacio de nombres principal que tiene definido el archivo XML</param>
+            <param name="archivosEsquema">Direcciones de los archivos de esquema que definen las características del espacio de nombres indicado</param>
+            <returns>Objeto de tipo <see cref="T:System.Xml.Linq.XElement"/> con el contenido del archivo XML ya parseado</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesXml.ValidarXmlLiteral(System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Valida un texto literal XML en contra de los esquemas definidos para el espacio de nombres del mismo y devuelve el XML
+            parseado.
+            </summary>
+            <param name="descriptor">Cadena con el contenido literal XML</param>
+            <param name="espacioDeNombres">Espacio de nombres principal que tiene definido el archivo XML</param>
+            <param name="archivosEsquema">Direcciones de los archivos de esquema que definen las características del espacio de nombres indicado</param>
+            <returns>Objeto de tipo <see cref="T:System.Xml.Linq.XElement"/> con el contenido XML ya parseado</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesXml.ParsearXml(System.Xml.Linq.XElement,System.Type,System.Collections.Generic.IEnumerable{System.String},System.Object[])">
+            <summary>
+            Parsea una estructura XML y la materializa con el uso de reflexión en objetos de código administrado, especificando
+            los espacios de nombre de código que contienen las posibles clases en las que se materializarán los objetos.
+            Generalmente, la clase en la que se materializará un elemento del XML se inferirá del nombre local de dicho
+            elemento.
+            </summary>
+            <param name="origen">Estructura XML que se materializará</param>
+            <param name="tipoObjeto">Opcional. Define la clase que se usará para materializar el elemento raíz. Si no se especifica,
+            se inferirá por su nombre</param>
+            <param name="espaciosNombre">Colección de espacios de nombre de código administrado en los que se encuentren
+            las posibles clases en las que se materializarán los objetos</param>
+            <param name="parámetrosConstructor">Parameters que podría requerir la clase en que se materializará el objeto al ser instanciada.</param>
+            <returns>Objeto instanciado con la información del XML <paramref name="origen"/> ya parseada</returns>
+        </member>
+        <member name="M:RetailOne.Utilidades.UtilidadesXml.ParsearXml(System.Xml.Linq.XElement,System.Type,System.Collections.Generic.IEnumerable{System.String},System.IFormatProvider,System.IFormatProvider,System.Boolean,System.Object[])">
+            <summary>
+            Parsea una estructura XML y la materializa con el uso de reflexión en objetos de código administrado, especificando
+            los espacios de nombre de código que contienen las posibles clases en las que se materializarán los objetos.
+            Generalmente, la clase en la que se materializará un elemento del XML se inferirá del nombre local de dicho
+            elemento.
+            </summary>
+            <param name="origen">Estructura XML que se materializará</param>
+            <param name="tipoObjeto">Opcional. Define la clase que se usará para materializar el elemento raíz. Si no se especifica,
+            se inferirá por su nombre</param>
+            <param name="espaciosNombre">Colección de espacios de nombre de código administrado en los que se encuentren
+            las posibles clases en las que se materializarán los objetos</param>
+            <param name="proveedorNúmeros">Proveedor de formato usado para interpretar los números asignados a los atributos</param>
+            <param name="proveedorFechas">Proveedor de formato usado para interpretar las fechas asignadas a los atributos</param>
+            <param name="sóloPropiedadesSimples">Si se especifica <see langword="true"/>, sólo se parsearán los atributos del XML (generalmente,
+            asociadas a tipos de datos primitivos), omitiendo los elementos descendientes</param>
+            <param name="parámetrosConstructor">Parameters que podría requerir la clase en que se materializará el objeto al ser instanciada.</param>
+            <returns>Objeto instanciado con la información del XML <paramref name="origen"/> ya parseada</returns>
+        </member>
+    </members>
+</doc>

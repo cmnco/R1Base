@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailOne.Utilidades", "RetailOne.Utilidades\RetailOne.Utilidades.csproj", "{689CCD1F-E5F7-4632-B9C9-DD38E2C03FF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailOne.Datos", "RetailOne.Datos\RetailOne.Datos.csproj", "{B83BB44F-4A38-4C97-B72B-0F0D442E6058}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailOne", "RetailOne\RetailOne.csproj", "{C0E16F09-F797-4629-BDBD-9805939F1704}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailOne.Test", "RetailOne.Test\RetailOne.Test.csproj", "{14653A55-DBF0-4B96-BEE4-A7C53FA45487}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailOne.Restaurantes", "RetailOne.Restaurantes\RetailOne.Restaurantes.csproj", "{AE38A9B2-0E03-470A-B2D4-99E20832AFF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{689CCD1F-E5F7-4632-B9C9-DD38E2C03FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{689CCD1F-E5F7-4632-B9C9-DD38E2C03FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{689CCD1F-E5F7-4632-B9C9-DD38E2C03FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{689CCD1F-E5F7-4632-B9C9-DD38E2C03FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B83BB44F-4A38-4C97-B72B-0F0D442E6058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83BB44F-4A38-4C97-B72B-0F0D442E6058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83BB44F-4A38-4C97-B72B-0F0D442E6058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B83BB44F-4A38-4C97-B72B-0F0D442E6058}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0E16F09-F797-4629-BDBD-9805939F1704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0E16F09-F797-4629-BDBD-9805939F1704}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0E16F09-F797-4629-BDBD-9805939F1704}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0E16F09-F797-4629-BDBD-9805939F1704}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14653A55-DBF0-4B96-BEE4-A7C53FA45487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14653A55-DBF0-4B96-BEE4-A7C53FA45487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14653A55-DBF0-4B96-BEE4-A7C53FA45487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14653A55-DBF0-4B96-BEE4-A7C53FA45487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE38A9B2-0E03-470A-B2D4-99E20832AFF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE38A9B2-0E03-470A-B2D4-99E20832AFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE38A9B2-0E03-470A-B2D4-99E20832AFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE38A9B2-0E03-470A-B2D4-99E20832AFF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CAF8DF06-FE44-43E3-9AAA-526FA00D8450}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://soluteam:8080/tfs/soluone
+		SccProjectUniqueName0 = RetailOne.Utilidades\\RetailOne.Utilidades.csproj
+		SccProjectName0 = RetailOne.Utilidades
+		SccAuxPath0 = http://soluteam:8080/tfs/soluone
+		SccLocalPath0 = RetailOne.Utilidades
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = RetailOne.Datos\\RetailOne.Datos.csproj
+		SccProjectName1 = RetailOne.Datos
+		SccAuxPath1 = http://soluteam:8080/tfs/soluone
+		SccLocalPath1 = RetailOne.Datos
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName2 = RetailOne\\RetailOne.csproj
+		SccProjectName2 = RetailOne
+		SccAuxPath2 = http://soluteam:8080/tfs/soluone
+		SccLocalPath2 = RetailOne
+		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+EndGlobal

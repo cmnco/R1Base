@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.soluone.com/esquemas/retailone/config"
+        xmlns:so1="http://www.soluone.com/esquemas/retailone/config"
+        elementFormDefault="qualified" xml:lang="es-VE">
+
+  <element name="RetailOne">
+    <annotation>
+      <documentation>Documento XML de configuración para sistemas desarrollados sobre la base RetailOne.</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="DatosImplementacion" type="so1:DatosImplementacion" minOccurs="1" maxOccurs="1"></element>
+        <element name="Globalizacion" type="so1:Globalizacion" minOccurs="1" maxOccurs="1" />
+        <element name="Ambientes" type="so1:Ambientes" minOccurs="0" maxOccurs="1" />
+        <element name="VariablesConfiguracion" type="so1:VariablesConfiguracion" minOccurs="0" maxOccurs="1"></element>
+      </sequence>
+    </complexType>
+  </element>
+
+  <complexType name="DatosImplementacion">
+    <annotation>
+      <documentation>
+        Especifica los datos básicos de identidad y acceso del sistema.
+      </documentation>
+    </annotation>
+    <attribute name="NombreSistema" type="string" use="required">
+      <annotation>
+        <documentation>
+          Establece un nombre para el sistema. Generalmente, aparece en los títulos de sus ventanas.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="Abreviatura" type="string" use="required">
+      <annotation>
+        <documentation>
+          Establece una abreviatura para el sistema. Esta abreviatura es útil a la hora de identificar cookies y
+          otras variables de aplicación.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="Version" type="string" use="optional" default="1.0">
+      <annotation>
+        <documentation>
+          Opcional. Especifica la versión del sistema. En lugar de ser un dato numérico, es de tipo 'string'
+          porque es puramente informativo y permite especificar datos no numéricos asociados a la versión
+          (como indicaciones 'beta' o similares).
+          Value por defecto: '1.0'
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="UrlRaíz" type="string" use="optional" default="">
+      <annotation>
+        <documentation>
+          Opcional. Establece la dirección URL de la raíz de aplicación del sistema.
+          Si no se establece de manera explícita (o se indica con cadena vacía), se deducirá del contexto de la primera solicitud
+          al sistema, al momento de inicializarse; por ejemplo, si el primer usuario que accede al sistema lo hace introduciendo
+          la dirección 'http://miempresa.com/default.aspx' (sin el 'www.'), la propiedad UrlRaíz valdrá 'http://miempresa.com/'.
+          Es de suma importancia recordar que una misma aplicación web puede ser accedida desde diversas direcciones URL, dada la configuración
+          DNS del servidor, del dominio y de la red (por ejemplo, una misma aplicación podría ser accedida a través de 'http://miempresa.com',
+          'http://www.miempresa.com/' y 'http://localhost/', esta última si se accede desde el mismo servidor.
+          Value por defecto: ''
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="ModoDepuracion" type="boolean" use="optional" default="false"></attribute>
+  </complexType>
+
+  <complexType name="Globalizacion">
+    <annotation>
+      <documentation>
+        Colección de configuraciones de cultura para la globalización o internacionalización de las aplicaciones del sistema.
+      </documentation>
+    </annotation>
+    <choice minOccurs="1" maxOccurs="unbounded">
+      <element name="Cultura">
+        <annotation>
+          <documentation>
+            Establece las características de una cultura. Estas características ajustarán la manera de presentar datos numéricos, textuales
+            y cronológicos en las interfaces de usuario, permitiéndole desarrollar aplicaciones globalizadas (que automáticamente ajusten su
+            visualización a distintas culturas).
+          </documentation>
+        </annotation>
+        <complexType>
+          <attribute name="Codigo" type="string" use="required">
+            <annotation>
+              <documentation>
+                Establece el código de la cultura en el formato 'ii-LL' (donde 'ii' es la abreviatura en dos caracteres minúsculas del idioma y donde
+                'LL' es la abreviatura en dos caracteres mayúsculas de la localización). 'en-US' y 'es-VE' son ejemplos de códigos de cultura.
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="Nombre" type="string" use="required">
+            <annotation>
+              <documentation>
+                Establece el nombre con que se identificará la cultura.
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="CantidadDecimales" type="int" use="required">
+            <annotation>
+              <documentation>
+                Establece la cantidad predeterminada de posiciones decimales máximas a las que se redondearán las expresiones numéricas.
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="SeparadorDecimal" type="string" use="required">
+            <annotation>
+              <documentation>
+                Establece el símbolo que se usará como separador de espacios decimales.
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="SeparadorMiles" type="string" use="required">
+            <annotation>
+              <documentation>
+                Establece el símbolo que se usará como separador de miles.
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="FormatoFechaCorta" type="string" use="required">
+            <annotation>
+              <documentation>
+                Establece el formato en que se presentarán las fechas cortas (usando patrones tales como 'dd/MM/yyyy',
+                aceptados por los métodos de formato de fechas de .NET Framework).
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="FormatoFechaLarga" type="string" use="required">
+            <annotation>
+              <documentation>
+                Establece el formato en que se presentarán las fechas largas (usando patrones tales como "dddd, d 'de' MMMM 'de' yyyy",
+                aceptados por los métodos de formato de fechas de .NET Framework).
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="FormatoHora" type="string" use="required">
+            <annotation>
+              <documentation>
+                Establece el formato en que se presentarán las horas (usando patrones tales como "hh:mm tt").
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="HusoHorario" use="optional" default="-100" type="decimal">
+            <annotation>
+              <documentation>
+                Opcional. Establece la diferencia entre la hora coordinada UTC y el huso horario al que se deban ajustar las horas manejadas
+                por el sistema. Al especificar explícitamente un valor de huso horario,
+                se evitan desincronías cuando la configuración regional del servidor no maneje el mismo huso horario que los
+                terminales de los usuarios (por ejemplo, si el servidor fuera un servicio de hosting compartido).
+                Si no se establece esta propiedad, se asumirá el huso horario del servidor.
+              </documentation>
+            </annotation>
+          </attribute>
+        </complexType>
+      </element>
+    </choice>
+  </complexType>
+
+  <complexType name="Ambientes">
+    <annotation>
+      <documentation>
+        Colección con los ambientes de datos (conjuntos de orígenes de datos) que se podrán gestionar a través del sistema.
+        De esta manera, se pueden tener copias del sistema que apunten a datos diferentes (por ejemplo, un ambiente de pruebas
+        y otro para producción).
+      </documentation>
+    </annotation>
+    <choice minOccurs="1" maxOccurs="unbounded">
+      <element name="Ambiente" type="so1:Ambiente"/>
+    </choice>
+    <attribute name="AmbientePredeterminado" type="string" use="optional" default=""></attribute>
+  </complexType>
+
+  <complexType name="Ambiente">
+    <annotation>
+      <documentation>
+        Agrupa la cultura y orígenes de datos que se usarán en un ambiente de datos del sistema.
+        Los distintos ambientes de datos podrán apuntar a orígenes de datos y culturas distintas, permitiéndole al usuario
+        elegir en cuál de dichos ambientes iniciar sesión y, de esa manera, interactuar a través del mismo ambiente de ejecución
+        con distintos transfondos de datos (por ejemplo, distinguiendo un ambiente para datos de producción y otro para pruebas).
+      </documentation>
+    </annotation>
+    <choice minOccurs="1" maxOccurs="unbounded">
+      <element name="OrigenDatos" type="so1:OrigenDatos"></element>
+    </choice>
+    <attribute name="ID" type="ID" use="required">
+      <annotation>
+        <documentation>
+          Establece el identificador del ambiente de datos.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="Nombre" type="string" use="required">
+      <annotation>
+        <documentation>
+          Establece el nombre del ambiente de datos.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="IdiomaPredeterminado" type="string" use="required">
+      <annotation>
+        <documentation>
+          Establece la cultura predeterminada del ambiente de datos.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="OrigenPredeterminado" type="string">
+      <annotation>
+        <documentation>
+          Establece el origen de datos predeterminado del ambiente.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="DatosInstanciaDirectorioUsuarios" type="string" use="optional" default="Principal.Principal">
+      <annotation>
+        <documentation>
+          Establece los datos resumidos de la instancia (en formato 'IDOrigen.IDInstancia') que se usará para el manejo de
+          directorio de usuarios.
+        </documentation>
+      </annotation>
+    </attribute>
+  </complexType>
+
+  <complexType name="OrigenDatos">
+    <annotation>
+      <documentation>
+        Representa un origen de datos relacional (base de datos).
+        Engloba una cadena de conexión y la especificación del proveedor del origen,
+        adicional de un nombre para identificarlo.
+      </documentation>
+    </annotation>
+    <!--<attribute name="Nombre" type="string" use="required">
+      <annotation>
+        <documentation>
+          Establece el identificador del origen.
+        </documentation>
+      </annotation>
+    </attribute>-->
+    <attribute name="CadenaConexion" type="string" use="required">
+      <annotation>
+        <documentation>
+          Establece la cadena de conexión (formateada de acuerdo al soporte de ADO.NET) del origen de datos.
+        </documentation>
+      </annotation>
+    </attribute>
+    <!--<attribute name="Servidor" type="string" use="required">
+      <annotation>
+        <documentation>
+          Servidor de base de datos.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="NombreBD" type="string" use="required">
+      <annotation>
+        <documentation>
+          Nombre de base de datos.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="Usuario" type="string" use="required">
+      <annotation>
+        <documentation>
+          Usuario de base de datos.
+        </documentation>
+      </annotation>
+    </attribute>
+    <attribute name="Contraseña" type="string" use="required">
+      <annotation>
+        <documentation>
+          Contraseña de base de datos.
+        </documentation>
+      </annotation>
+    </attribute>-->
+    <attribute name="ProveedorDatos">
+      <annotation>
+        <documentation>
+          Indica la plataforma de la base de datos.
+        </documentation>
+      </annotation>
+      <simpleType>
+        <restriction base="string">
+          <enumeration value="Hana"></enumeration>
+          <enumeration value="PostgreSQL"></enumeration>
+          <enumeration value="Oracle"></enumeration>
+          <enumeration value="MySQL"></enumeration>
+          <enumeration value="SQLServer"></enumeration>
+          <enumeration value="SQLServer2005"></enumeration>
+          <enumeration value="SQLServer2008"></enumeration>
+          <enumeration value="SQLServer2012"></enumeration>
+          <enumeration value="SQLServer2014"></enumeration>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
+
+  <complexType name="VariablesConfiguracion">
+    <annotation>
+      <documentation>
+        Diccionario de cadenas con un conjunto de variables generales (ID/valor) que podrán ser útiles en cualquier
+        componente que las acceda conociendo sus identificadores.
+      </documentation>
+    </annotation>
+    <choice minOccurs="0" maxOccurs="unbounded">
+      <element name="Variable">
+        <annotation>
+          <documentation>
+            Define una variable general de sistema. Esta podrá ser útil en cualquier
+            componente que la acceda conociendo su identificador.
+          </documentation>
+        </annotation>
+        <complexType>
+          <attribute name="ID" use="required" type="string">
+            <annotation>
+              <documentation>
+                Establece el identificador de la variable.
+              </documentation>
+            </annotation>
+          </attribute>
+          <attribute name="Value" use="required" type="string">
+            <annotation>
+              <documentation>
+                Establece el valor de la variable.
+              </documentation>
+            </annotation>
+          </attribute>
+        </complexType>
+      </element>
+    </choice>
+  </complexType>
+</schema>
