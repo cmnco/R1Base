@@ -1,0 +1,65 @@
+﻿using System;
+
+namespace RetailOne.Utilidades
+{
+    [Serializable]
+    public class ExcepcionControlada : Exception
+    {
+        public string Nombre { get; set; }
+        public int Codigo { get; set; }
+        public string Mensaje { get { return base.Message; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param nombre="nombre"></param>
+        /// <param nombre="mensaje"></param>
+        /// <param nombre="codigo"></param>
+        public ExcepcionControlada(string nombre, string mensaje, int código)
+            : base(mensaje)
+        {
+            Nombre = nombre;
+            Codigo = código;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param nombre="mensaje"></param>
+        public ExcepcionControlada(string mensaje)
+            : this("[EXCEPTION]", mensaje, 0)
+        {
+            
+        }
+
+        public ExcepcionControlada(string mensaje, Exception innerException)
+            : this("[EXCEPTION]", mensaje, 0, innerException)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param nombre="nombre"></param>
+        /// <param nombre="mensaje"></param>
+        public ExcepcionControlada(string nombre, string mensaje)
+            : this(nombre, mensaje, 0)
+        {
+            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param nombre="nombre"></param>
+        /// <param nombre="mensaje"></param>
+        /// <param nombre="codigo"></param>
+        /// <param nombre="innerException"></param>
+        public ExcepcionControlada(string nombre, string mensaje, int codigo, Exception innerException) 
+            : base(mensaje, innerException){
+                Nombre = nombre;
+                Codigo = codigo;
+        }
+    }
+}
